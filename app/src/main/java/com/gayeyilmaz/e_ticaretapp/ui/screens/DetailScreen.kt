@@ -16,15 +16,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.IndeterminateCheckBox
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -39,10 +43,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -84,7 +92,8 @@ fun DetailScreen(navController: NavController,product : Products){
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text="Product Detail") },
+                modifier = Modifier.height(60.dp),
+                title = { Text(text="Details") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = colorResource(id= R.color.main_color),
                     titleContentColor = colorResource(R.color.white)
@@ -93,6 +102,7 @@ fun DetailScreen(navController: NavController,product : Products){
                     IconButton(onClick = { /* do something */ }) {
                         Icon(
                             Icons.Filled.Close,
+                            tint = colorResource(R.color.white),
                             contentDescription = "Localized description"
                         )
                     }
@@ -102,6 +112,7 @@ fun DetailScreen(navController: NavController,product : Products){
                         navController.navigate("basketScreen") }) {
                         Icon(
                             imageVector = Icons.Filled.ShoppingBasket,
+                            tint = colorResource(R.color.white),
                             contentDescription = "Localized description"
                         )
                     }
@@ -112,84 +123,145 @@ fun DetailScreen(navController: NavController,product : Products){
         },
         bottomBar = {
             Row (
-                modifier = Modifier.padding( 20.dp),
+                modifier = Modifier.background(colorResource(R.color.add_container_background)).padding( vertical = 20.dp, horizontal = 30.dp),
                 verticalAlignment = Alignment.CenterVertically
             ){
                 var total = productNumber.value*product.price
-                Text(text = total.toString(), modifier = Modifier
+                val totalS = total.toString()
+                Text(text ="$ $totalS", modifier = Modifier
+
                     .weight(1f),
-                    fontSize = 20.sp)
+                    color = colorResource(R.color.white),
+                            fontSize = 20.sp)
                 Button(onClick ={
                     addBasket(product,productNumber.value)
                        productNumber.value = 0         },
-                    modifier = Modifier.weight(2f)) {
-                    Text(text = "Add Basket")
+                    modifier = Modifier.width(150.dp).height(50.dp),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.main_color))
+                ) {
+                    Text(
+                        fontWeight = FontWeight.Bold,
+                        text = "Add to Cart")
                 }
             }
         }
 
 
     ) {innerpadding->
-        Column(modifier = Modifier.padding(innerpadding).fillMaxWidth().padding(20.dp),
+        Column(modifier = Modifier
+            .background(colorResource(R.color.add_container_background))
+            .padding(innerpadding)
+            .fillMaxSize()
+            .padding(16.dp)
+          ,
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
-            Card (modifier = Modifier.padding(5.dp).width(250.dp).height(250.dp))
+            Card (modifier = Modifier.padding(5.dp).fillMaxWidth().height(300.dp),
+            colors= CardDefaults.cardColors(colorResource(R.color.white)))
             {
                 IconButton(onClick = { /* do something */ },
-                    modifier = Modifier.padding(start = 210.dp)
+                    modifier = Modifier.padding(start =310.dp)
                 ) {
                     Icon(Icons.Filled.FavoriteBorder, contentDescription = "Localized description")
                 }
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     val productImage = product.image
-                    Image(modifier = Modifier.size(300.dp).padding(bottom  =50.dp),
+                    Image(modifier = Modifier.size(200.dp),
                         painter= painterResource(context.resources.getIdentifier(
-                        productImage,"drawable",context.packageName)), contentDescription = "picture")
-
-                    Text(text = product.name, modifier = Modifier)
-                }
-            }
-           /** val productImage = product.image
-            Image(modifier = Modifier.padding(20.dp).size(200.dp), painter= painterResource(context.resources.getIdentifier(
-                productImage,"drawable",context.packageName)), contentDescription = "picture")
-
-            Text(text = product.name)**/
-
-
-
-
-            Row(
-                modifier = Modifier.padding(top = 20.dp),
-                verticalAlignment = Alignment.CenterVertically
-
-            ){
-                IconButton(onClick = {
-                    if(productNumber.value != 0){
-                        productNumber.value = productNumber.value-1
+                            productImage,"drawable",context.packageName)), contentDescription = "picture")
+                    IconButton(onClick = { /* do something */ },
+                        modifier = Modifier
+                    ) {
+                        Icon(
+                            Icons.Filled.MoreHoriz, contentDescription = "Localized description",
+                            modifier = Modifier.size(56.dp),
+                            tint = colorResource(R.color.black_1))
                     }
-                },
-                    modifier = Modifier.padding(end=20.dp)
-
-                ) {
-                    Icon(Icons.Filled.IndeterminateCheckBox, contentDescription = "Localized description", modifier = Modifier.size(50.dp))
                 }
-
-                Text(text = productNumber.value.toString())
-
-                IconButton(onClick = {productNumber.value = productNumber.value+1},
-                    modifier = Modifier.padding(start=20.dp)
-                ) {
-                    Icon(Icons.Filled.AddBox, contentDescription = "Localized description",modifier = Modifier.size(50.dp))
-                }
-
-
             }
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(top = 10.dp,start=20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+
+                ){
+                    Text(text = product.name,
+                        fontSize = 20.sp,
+                        color = colorResource(R.color.white),
+                        modifier = Modifier
+                    )
+                    Row(
+                        modifier = Modifier.padding(start = 150.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        IconButton(onClick = {
+                            if(productNumber.value != 0){
+                                productNumber.value = productNumber.value-1
+                            }
+                        },
+                            modifier = Modifier.padding(end=20.dp)
+
+                        ) {
+                            Icon(Icons.Filled.IndeterminateCheckBox,
+                                contentDescription = "Localized description",
+                                tint = colorResource(R.color.white),
+                                modifier = Modifier.size(50.dp))
+                        }
+
+                        Text(modifier = Modifier,
+                            color=colorResource(R.color.white),
+                            text = productNumber.value.toString())
+
+                        IconButton(onClick = {productNumber.value = productNumber.value+1},
+                            modifier = Modifier.padding(start=20.dp)
+                        ) {
+                            Icon(Icons.Filled.AddBox,
+                                contentDescription = "Localized description",
+                                tint = colorResource(R.color.white),
+                                modifier = Modifier.size(50.dp))
+                        }
+
+                    }
+
+                }
+            Row(modifier = Modifier.fillMaxWidth().padding(top=16.dp),
+                horizontalArrangement = Arrangement.SpaceAround
+
+                ){
+
+                    Text( fontWeight = FontWeight.Bold,
+                        modifier = Modifier.drawWithContent{
+                            drawContent()
+                            drawLine(
+                                color = Color(0xFFFC7022),
+                                start = Offset(0f, size.height),
+                                end = Offset(size.width, size.height),
+                                strokeWidth = 5f
+                            )
+                        },
+                        color = colorResource(R.color.white),
+                        text =  "Details")
+
+
+                Text(modifier = Modifier,
+                    color = colorResource(R.color.text_color),
+                    text = "Shop")
+                Text(modifier = Modifier,
+                    color = colorResource(R.color.text_color),
+                    text =  "Features")
+            }
+
+
+
+
+
+
+
 
 
 

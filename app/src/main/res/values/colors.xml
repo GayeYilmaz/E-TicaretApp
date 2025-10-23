@@ -8,9 +8,13 @@
     <color name="black">#FF000000</color>
 
 
-    <color name="black_1">#000201</color>
+    <color name="black_1">#09090B</color>
+    <color name="text_color">#80808A</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="main_color">#8BC34A</color>
+    <color name="main_color">#FC7022</color>
+    <color name="hearth_color">#E62931</color>
     <color name="dark_gray">#3A3E40</color>
-    <color name="background">#F5F5F5</color>
+    <color name="background">#F3F3F5</color>
+    <color name="bottom_bar_background">#263659</color>
+    <color name="add_container_background">#0D1137</color>
 </resources>

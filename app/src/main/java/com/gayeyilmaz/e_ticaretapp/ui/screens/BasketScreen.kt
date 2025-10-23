@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
@@ -43,7 +45,9 @@ import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.gayeyilmaz.e_ticaretapp.data.entity.ProductsBasket
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 
 import androidx.compose.ui.unit.sp
 
@@ -90,7 +94,8 @@ fun BasketScreen(navController: NavController){
 
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text="Basket ") },
+                modifier = Modifier.height(60.dp),
+                title = { Text(text="Cart ") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = colorResource(id= R.color.main_color),
                     titleContentColor = colorResource(R.color.white)
@@ -99,7 +104,8 @@ fun BasketScreen(navController: NavController){
                     IconButton(onClick = { /* do something */ }) {
                         Icon(
                             Icons.Filled.Close,
-                            contentDescription = "Localized description"
+                            contentDescription = "Localized description",
+                            tint=colorResource(R.color.white)
                         )
                     }
                 },
@@ -107,30 +113,36 @@ fun BasketScreen(navController: NavController){
         },
         bottomBar = {
             Column (
-                modifier = Modifier.fillMaxWidth().padding( 20.dp),
-
-
+                modifier = Modifier.background(colorResource(R.color.add_container_background)).padding(16.dp).fillMaxWidth().height(120.dp)
+                   .padding( bottom=16.dp),
             ){
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
 
                 ){
-                    Text(text = "Tranasport fee :")
-                    Text(text =  " 0 " )
+                    Text(color =colorResource(R.color.white),
+                        text = "Tranasport fee :")
+                    Text(color =colorResource(R.color.white),
+                        text =  "$0 " )
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ){
-                    Text(text = "Total :")
-                    Text(text =  "${totalPrice}" )
+                    Text(
+                        color =colorResource(R.color.white),
+                        text = "Total :")
+                    Text(color =colorResource(R.color.white),
+                        text =  "$${totalPrice}" )
                 }
                 Button(
-                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(25.dp),
+                    modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+                    colors = ButtonDefaults.buttonColors(colorResource(R.color.main_color)),
                     onClick = {}
                 ) {
-                    Text(text = " Approve Basket")
+                    Text(text = "Pay the Cart")
                 }
 
 
@@ -143,6 +155,8 @@ fun BasketScreen(navController: NavController){
     { innerpadding->
         Column(
             modifier = Modifier
+                .fillMaxSize()
+                .background(colorResource(R.color.add_container_background))
                 .padding(innerpadding)
                 .padding(10.dp)
         ){
