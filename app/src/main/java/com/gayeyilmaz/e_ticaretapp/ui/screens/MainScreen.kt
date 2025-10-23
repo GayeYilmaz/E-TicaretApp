@@ -129,9 +129,8 @@ fun MainScreen(navController: NavController){
                     count = ProductsList.count(),
                     itemContent = {
                         val product = ProductsList[it]
-                        Card (modifier = Modifier.padding(5.dp)
-
-                        ){
+                        Card (modifier = Modifier.padding(5.dp))
+                        {
                             Column (
                                 modifier = Modifier.background(colorResource(R.color.background)),
                                 horizontalAlignment = Alignment.CenterHorizontally
@@ -168,13 +167,7 @@ fun MainScreen(navController: NavController){
                                         ) {
                                             Icon(Icons.Filled.AddBox, contentDescription = "Localized description")
                                         }
-
-
-
-                                    }
-                                }
-
-
+                                    } }
                             }
                         }
                     }
