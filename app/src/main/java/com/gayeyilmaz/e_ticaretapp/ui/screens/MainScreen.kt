@@ -1,11 +1,16 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
+import android.util.Log
+import androidx.compose.animation.core.withInfiniteAnimationFrameMillis
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,6 +25,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -39,6 +45,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -46,6 +53,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -68,42 +76,50 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import com.gayeyilmaz.e_ticaretapp.R
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
+import com.gayeyilmaz.e_ticaretapp.ui.components.CategoriesCard
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomAppBar
+import com.gayeyilmaz.e_ticaretapp.ui.components.CustomProductCard
+import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
 import com.google.gson.Gson
 import kotlin.math.round
 import kotlin.text.get
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.LaunchedEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navController: NavController){
-    val images = remember{listOf("bilgisyar","gozluk","kemer","telefon")}
+fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
+    var scrollState = rememberScrollState()
     val searchQuery = remember { mutableStateOf("") }
-    val ProductsList = remember { mutableListOf<Products>() }
-    val p1 =Products(1,"Telefon","telefon","Teknoloji",18000,"Apple")
-    val p2 =Products(2,"Gözlük","gozluk","Aksesuar",3500,"Casio")
-    val p3 =Products(3,"Bilgisayar","bilgisayar","Teknoloji",18000,"Apple")
-    val p4 =Products(4,"Kemer","kemer","Aksesuar",3500,"Casio")
 
-    ProductsList.add(p1)
-    ProductsList.add(p2)
-    ProductsList.add(p3)
-    ProductsList.add(p4)
+
 
 
    val context = LocalContext.current
+
+    val images = remember{listOf("bilgisyar","gozluk","kemer","telefon")}
+
+    val productsList = mainViewModel.productsList.observeAsState(listOf())
+
+    val categoryList = mainViewModel.categoriesList.observeAsState(listOf())
+
+    LaunchedEffect(true) {
+        mainViewModel.loadProducts()
+    }
 
     Scaffold(
 
         topBar = {
             Row(
-                modifier = Modifier.padding(horizontal = 10.dp, vertical = 15.dp),
+                modifier = Modifier.padding(start=16.dp,end=16.dp, top=30.dp),
                 verticalAlignment = Alignment.CenterVertically
             ){
                 IconButton(
                     onClick = { /* do something */ },
                     modifier = Modifier
-                        .padding(end=10.dp)
+                        .padding(end = 10.dp)
                         .clip(CircleShape)
                         .size(36.dp)
                         .background(colorResource(R.color.main_color)),
@@ -114,26 +130,42 @@ fun MainScreen(navController: NavController){
                         modifier = Modifier.size(30.dp),
                         tint = Color.White)
                 }
-                OutlinedTextField(
-                    value=searchQuery.value,
-                    shape = RoundedCornerShape(50.dp),
-                    onValueChange = {searchQuery.value = it
-                        // mainViewModel.search(it)
-                    },
-                    label={Text(text =stringResource(R.string.main_screen_search_hint))},
-                    leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Seacrh Field", tint = colorResource(R.color.black_1))},
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = colorResource(R.color.white),
-                        unfocusedContainerColor = colorResource(R.color.background),
-                        disabledContainerColor  = colorResource(R.color.white),
-                        focusedLabelColor  = colorResource(R.color.main_color),
-                        cursorColor  = colorResource(R.color.main_color),
-                        focusedBorderColor = colorResource(R.color.main_color),
-                        unfocusedBorderColor = colorResource(R.color.text_color),
+                Box(
+                    modifier = Modifier.height(56.dp),
+                            contentAlignment = Alignment.Center
+
+                ){
+                    OutlinedTextField(
+                        value=searchQuery.value,
+                        shape = RoundedCornerShape(50.dp),
+                        onValueChange = {searchQuery.value = it
+                            mainViewModel.search(it)
+                            // mainViewModel.search(it)
+                        },
+                        label={Text(
+                            modifier = Modifier,
+                            text =stringResource(R.string.main_screen_search_hint),
+
+                        ) },
+                        leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Seacrh Field", tint = colorResource(R.color.black_1))},
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = colorResource(R.color.white),
+                            unfocusedContainerColor = colorResource(R.color.background),
+                            disabledContainerColor  = colorResource(R.color.white),
+                            focusedLabelColor  = colorResource(R.color.main_color),
+                            cursorColor  = colorResource(R.color.main_color),
+                            focusedBorderColor = colorResource(R.color.main_color),
+                            unfocusedBorderColor = colorResource(R.color.text_color),
+
+                            ),
 
                         )
-                )
+
+
+                }
+
+
 
             }
 
@@ -143,13 +175,18 @@ fun MainScreen(navController: NavController){
 
         },
         bottomBar = {
-            CustomBottomAppBar()
+            CustomBottomAppBar(navController)
         }
     ){innerpadding ->
         Column(
-            modifier= Modifier.fillMaxSize().padding(innerpadding).padding(16.dp).verticalScroll(rememberScrollState())
+            modifier= Modifier
+                .fillMaxSize()
+                .padding(innerpadding)
+                .padding(16.dp)
+                .verticalScroll(scrollState)
         ){
-           // item{
+
+           //HOT SALES HEADLINE
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -169,6 +206,7 @@ fun MainScreen(navController: NavController){
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
+            //ADD BLOCK
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -257,8 +295,10 @@ fun MainScreen(navController: NavController){
                         }
                     }
                 }
+
                 Spacer(modifier = Modifier.height(20.dp))
 
+               //CATEGORY HEADLINE
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -279,37 +319,17 @@ fun MainScreen(navController: NavController){
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
-                val categories = listOf("Phones", "Computer", "Health", "Books")
+
+               //CATEGORIES ROW
                 LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    items(categories.size) { category ->
-                        val name = categories[category]
-                        Card(
-                            modifier = Modifier
-                                .height(100.dp)
-                                .width(75.dp)
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(10.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                Icon(
-                                    Icons.Filled.PhoneAndroid,
-                                    contentDescription = "Phone",
-                                    modifier = Modifier.size(36.dp),
-                                    tint = Color.White
-                                )
-                                Text(
-                                    modifier = Modifier.padding(top = 10.dp),
-                                    fontSize = 12.sp,
-                                    text = name
-                                )
-                            }
-                        }
+
+
+                    items(categoryList.value){category->
+                        CategoriesCard(category)
                     }
+
                 }
                 Spacer(modifier = Modifier.height(20.dp))
 
@@ -336,80 +356,16 @@ fun MainScreen(navController: NavController){
 
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(count = 2),
-                    modifier = Modifier.fillMaxWidth().height(500.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(500.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(ProductsList.size) { index ->
-                        val product = ProductsList[index]
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .background(colorResource(R.color.background))
-                                    .fillMaxSize(),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                IconButton(
-                                    onClick = { /* do something */ },
-                                    modifier = Modifier.align(Alignment.End)
-                                ) {
-                                    Icon(
-                                        Icons.Filled.FavoriteBorder,
-                                        contentDescription = "Add to favorites"
-                                    )
-                                }
 
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .clickable {
-                                            val productJson = Gson().toJson(product)
-                                            navController.navigate("detailScreen/$productJson")
-                                        }
-                                        .padding(10.dp),
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    val productImage = product.image
-                                    Image(
-                                        painter = painterResource(
-                                            context.resources.getIdentifier(
-                                                productImage,
-                                                "drawable",
-                                                context.packageName
-                                            )
-                                        ),
-                                        contentDescription = "product image",
-                                        modifier = Modifier.size(80.dp)
-                                    )
+                    items(productsList.value) { product ->
+                        CustomProductCard(navController=navController,product=product,context=context)
 
-                                    Text(
-                                        text = product.name,
-                                        modifier = Modifier.padding(top = 8.dp)
-                                    )
-
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-                                        Text(
-                                            text = "$${product.price}",
-                                            modifier = Modifier.weight(1f)
-                                        )
-                                        IconButton(onClick = { /* do something */ }) {
-                                            Icon(
-                                                Icons.Filled.AddBox,
-                                                contentDescription = "Add to cart"
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
            // }

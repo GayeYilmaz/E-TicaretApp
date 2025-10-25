@@ -31,24 +31,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.gayeyilmaz.e_ticaretapp.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomBottomAppBar(){
+fun CustomBottomAppBar(navController: NavController){
 
 
 
                 BottomAppBar(
                     modifier = Modifier.height(80.dp)
-                        .clip(RoundedCornerShape(topStart=40.dp, topEnd = 40.dp, bottomStart = 0.dp, bottomEnd = 0.dp)),
+                        .clip(RoundedCornerShape(topStart=0.dp, topEnd = 0.dp, bottomStart = 0.dp, bottomEnd = 0.dp)),
                     containerColor = colorResource(R.color.bottom_bar_background),
 
 
 
                     actions = {
-                        IconButton(onClick = { /* do something */ },
+                        IconButton(onClick = {
+                       navController.navigate( "mainScreen" )
+                        },
                             modifier = Modifier.weight(1f)
                         ) {
                             Icon(Icons.Filled.Home, contentDescription = "Localized description", tint = colorResource(R.color.white))
@@ -74,10 +77,13 @@ fun CustomBottomAppBar(){
                     floatingActionButton = {
                         FloatingActionButton(
                             modifier = Modifier,
-                            onClick = { /* do something */ },
+                            onClick = {
+                                navController.navigate( "cartScreen" )
+                                      /* do something */ },
                            shape = CircleShape,
-                            containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                            containerColor = colorResource(R.color.white),
+                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+
                         ) {
                             Icon(Icons.Filled.ShoppingBasket, "Localized description")
                         }
