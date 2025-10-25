@@ -57,6 +57,7 @@ import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.LaunchedEffect
+import hilt_aggregated_deps._com_gayeyilmaz_e_ticaretapp_ui_viewmodels_CartViewModel_HiltModules_BindsModule
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -110,7 +111,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                         value=searchQuery.value,
                         shape = RoundedCornerShape(50.dp),
                         onValueChange = {searchQuery.value = it
-                            mainViewModel.search(it)
+                           // mainViewModel.search(it)
                             // mainViewModel.search(it)
                         },
                         label={Text(
@@ -333,11 +334,14 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+                    if(!(productsList.value==null)){
+                        items(productsList.value) { product ->
+                            CustomProductCard(navController=navController,product=product,context=context)
 
-                    items(productsList.value) { product ->
-                        CustomProductCard(navController=navController,product=product,context=context)
+                        }
 
                     }
+
                 }
            // }
 

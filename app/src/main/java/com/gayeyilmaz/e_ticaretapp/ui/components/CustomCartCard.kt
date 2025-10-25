@@ -26,12 +26,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gayeyilmaz.e_ticaretapp.R
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
+import com.skydoves.landscapist.glide.GlideImage
 import kotlin.Unit
 
 
 @Composable
 fun CustomCartCard(cartProduct: CartProducts, context: Context,onDeleteClick:(Int) -> Unit){
-    val product = cartProduct.product
+
     var price = 0
     var totalPrice = 0
 
@@ -46,22 +47,25 @@ fun CustomCartCard(cartProduct: CartProducts, context: Context,onDeleteClick:(In
         horizontalArrangement = Arrangement.SpaceAround
     )
     {
-        Image(
+       /**Image(
             modifier = Modifier.size(100.dp),
-            painter= painterResource(context.resources.getIdentifier(
-                product.image,"drawable",context.packageName)), contentDescription = "picture")
+            /**painter= painterResource(context.resources.getIdentifier(**/
+
+              //  product.image,"drawable",context.packageName)), contentDescription = "picture")**/
+        val url = "http://kasimadalan.pe.hu/urunler/resimler/${cartProduct.image}"
+        GlideImage(imageModel = url,   modifier = Modifier.size(100.dp))
         Column (
             modifier = Modifier.padding(top = 10.dp)
         )
         {
             Text(fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                text = product.name )
+                text = cartProduct.name )
             Spacer(modifier = Modifier.padding(top=5.dp))
             Text(fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 color = colorResource(R.color.text_color),
-                text = "Price: $${product.price} ")
+                text = "Price: $${cartProduct.price} ")
             Spacer(modifier =  Modifier.padding(top=5.dp))
             Text(fontSize = 15.sp,
                 color = colorResource(R.color.text_color),
@@ -75,14 +79,14 @@ fun CustomCartCard(cartProduct: CartProducts, context: Context,onDeleteClick:(In
 
 
             ){
-            IconButton(onClick = {onDeleteClick(product.id)
+            IconButton(onClick = {onDeleteClick(cartProduct.cartId)
             },
                 modifier = Modifier
             ) {
                 Icon(Icons.Filled.Delete, contentDescription = "Localized description")
             }
 
-            price = cartProduct.ordered * product.price
+            price = cartProduct.ordered * cartProduct.price
             Text(fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top=25.dp),

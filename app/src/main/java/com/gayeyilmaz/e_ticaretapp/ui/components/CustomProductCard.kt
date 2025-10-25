@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import com.gayeyilmaz.e_ticaretapp.R
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.google.gson.Gson
+import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun CustomProductCard(navController: NavController,product: Products,context: Context){
@@ -72,7 +73,7 @@ fun CustomProductCard(navController: NavController,product: Products,context: Co
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val productImage = product.image
-                Image(
+               /** Image(
                     painter = painterResource(
                         context.resources.getIdentifier(
                             productImage,
@@ -82,7 +83,9 @@ fun CustomProductCard(navController: NavController,product: Products,context: Co
                     ),
                     contentDescription = "product image",
                     modifier = Modifier.size(80.dp)
-                )
+                )**/
+                val url = "http://kasimadalan.pe.hu/urunler/resimler/${product.image}"
+                GlideImage(imageModel = url,  modifier = Modifier.size(80.dp) )
 
                 Text(
                     fontSize =15.sp,

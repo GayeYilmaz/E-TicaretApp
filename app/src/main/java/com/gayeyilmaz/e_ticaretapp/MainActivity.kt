@@ -18,7 +18,9 @@ import com.gayeyilmaz.e_ticaretapp.ui.theme.ETicaretAppTheme
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.CartViewModel
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.DetailViewModel
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     val mainViewModel : MainViewModel by viewModels()
     val detailViewModel : DetailViewModel by viewModels()

@@ -47,6 +47,7 @@ import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomTopAppBAr
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.DetailViewModel
+import com.skydoves.landscapist.glide.GlideImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,7 +56,6 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
     var ordered = remember { mutableStateOf(0) }
     val context = LocalContext.current
 
-    val cartProductList = remember { mutableListOf<CartProducts>()  }
 
 
 
@@ -80,7 +80,9 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                     color = colorResource(R.color.white),
                             fontSize = 20.sp)
                 Button(onClick ={
-                    detailViewModel.addCart(cartProductList,product,ordered.value)
+                    detailViewModel.addCart(CartProducts(0,product.name
+                        ,product.image,product.category,product.price,
+                        product.brand,ordered.value,"gaye_yilmaz"))
                        ordered.value = 0         },
                     modifier = Modifier.width(150.dp).height(50.dp),
                     shape = RoundedCornerShape(10.dp),
@@ -117,10 +119,12 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    val productImage = product.image
+                    /**val productImage = product.image
                     Image(modifier = Modifier.size(200.dp),
                         painter= painterResource(context.resources.getIdentifier(
-                            productImage,"drawable",context.packageName)), contentDescription = "picture")
+                            productImage,"drawable",context.packageName)), contentDescription = "picture")**/
+                    val url = "http://kasimadalan.pe.hu/urunler/resimler/${product.image}"
+                    GlideImage(imageModel = url,  modifier  = Modifier.size(200.dp))
                     IconButton(onClick = { /* do something */ },
                         modifier = Modifier
                     ) {
@@ -178,7 +182,9 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                     color=colorResource(R.color.add_container_background),
                     text = ordered.value.toString())
 
-                IconButton(onClick = {ordered.value = ordered.value+1},
+                IconButton(onClick = {
+                    ordered.value = ordered.value+1
+                                     },
                     modifier = Modifier
                 ) {
                     Icon(Icons.Filled.AddBox,

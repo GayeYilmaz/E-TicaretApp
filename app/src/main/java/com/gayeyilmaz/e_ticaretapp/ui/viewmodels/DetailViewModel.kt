@@ -4,15 +4,18 @@ import androidx.lifecycle.ViewModel
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.gayeyilmaz.e_ticaretapp.data.repos.ProductsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DetailViewModel : ViewModel() {
-    var productRepository = ProductsRepository()
-    fun addCart(cartProductList:MutableList<CartProducts>,product:Products,ordered:Int){
+@HiltViewModel
+class DetailViewModel@Inject constructor(var productRepository : ProductsRepository) : ViewModel() {
+
+    fun addCart(cartProduct:CartProducts){
         CoroutineScope(Dispatchers.Main).launch {
-            productRepository.addCart(cartProductList,product,ordered)
+            productRepository.addCart(cartProduct)
         }
     }
 }

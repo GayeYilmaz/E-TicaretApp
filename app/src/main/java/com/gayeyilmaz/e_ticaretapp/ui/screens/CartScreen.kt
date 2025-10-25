@@ -27,6 +27,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.draw.clip
@@ -43,21 +44,16 @@ import kotlinx.coroutines.launch
 fun CartScreen(navController: NavController,cartViewModel: CartViewModel){
 
 
-    fun loadCartProducts(){
-
-    }
 
     val cartProductsList = cartViewModel.cartProductsList.observeAsState(listOf())
+
     var price = 0
     var totalPrice = 0
     for(cartProduct in cartProductsList.value){
-        val product = cartProduct.product
-
-        totalPrice = (cartProduct.ordered* cartProduct.product.price)+totalPrice
+        totalPrice = (cartProduct.ordered* cartProduct.price)+totalPrice
     }
 
 
-    //val cartProductList = mainViewModel.productsList.observeAsState(listOf())
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -67,6 +63,7 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel){
 
         topBar = {
             CustomTopAppBAr(navController,"Cart")
+
         },
         bottomBar = {
             Column(){
@@ -150,14 +147,14 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel){
         ){
             itemsIndexed(cartProductsList.value){index,cartProduct->
 
-                val product = cartProduct.product
+
                 CustomCartCard(
                     cartProduct = cartProduct,
                     context = context,
                     onDeleteClick = {
                         scope.launch {
                             val sb = snackbarHostState.showSnackbar(
-                                message = "Delete the ${product.name} from cart?",
+                                message = "Delete the ${cartProduct.name} from cart?",
                                 actionLabel ="YES")
                             if(sb == SnackbarResult.ActionPerformed){
                                 cartViewModel.delete(cartProduct.cartId)
