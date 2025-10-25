@@ -1,6 +1,6 @@
 package com.gayeyilmaz.e_ticaretapp.data.repos
 
-import android.util.Log
+
 import com.gayeyilmaz.e_ticaretapp.data.datasources.ProductsDatasource
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
