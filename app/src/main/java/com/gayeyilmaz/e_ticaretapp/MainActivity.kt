@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.android.volley.toolbox.Volley
 import com.gayeyilmaz.e_ticaretapp.ui.screens.AppNavigation
 import com.gayeyilmaz.e_ticaretapp.ui.screens.MainScreen
 import com.gayeyilmaz.e_ticaretapp.ui.theme.ETicaretAppTheme
@@ -26,6 +27,7 @@ class MainActivity : ComponentActivity() {
     val detailViewModel : DetailViewModel by viewModels()
     val cartViewModel : CartViewModel by viewModels()
 
+    val username="gaye_yilmaz"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +38,8 @@ class MainActivity : ComponentActivity() {
                 AppNavigation(
                     mainViewModel = mainViewModel,
                     detailViewModel = detailViewModel,
-                    cartViewModel = cartViewModel
+                    cartViewModel = cartViewModel,
+                    username=username
 
                 )
             }

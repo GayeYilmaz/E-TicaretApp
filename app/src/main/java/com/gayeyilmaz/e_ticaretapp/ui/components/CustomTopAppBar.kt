@@ -19,6 +19,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.gayeyilmaz.e_ticaretapp.R
+import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
+import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +45,9 @@ fun CustomTopAppBAr(navController: NavController,name:String){
         actions = {
             if(name =="Details"){
                 IconButton(onClick = {
-                    navController.navigate("cartScreen") }) {
+                    val cartProduct = CartProducts(0,"","","",0,"",0,"")
+                    var cartProductJson = Gson().toJson(cartProduct)
+                    navController.navigate("cartScreen/$cartProductJson") }) {
                     Icon(
                         imageVector = Icons.Filled.ShoppingBasket,
                         tint = colorResource(R.color.white),

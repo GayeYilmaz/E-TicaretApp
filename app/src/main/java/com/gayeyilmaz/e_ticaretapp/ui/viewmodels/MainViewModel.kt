@@ -21,6 +21,7 @@ class MainViewModel @Inject constructor(var productRepository : ProductsReposito
     init{
         loadProducts()
         loadCategories()
+
     }
 
     fun loadCategories(){

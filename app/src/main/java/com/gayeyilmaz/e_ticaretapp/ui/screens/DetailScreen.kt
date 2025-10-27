@@ -1,5 +1,6 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -47,17 +49,15 @@ import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomTopAppBAr
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.DetailViewModel
+import com.google.gson.Gson
 import com.skydoves.landscapist.glide.GlideImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen(navController: NavController,product : Products,detailViewModel: DetailViewModel){
+fun DetailScreen(navController: NavController,product : Products,detailViewModel: DetailViewModel,username:String){
 
     var ordered = remember { mutableStateOf(0) }
     val context = LocalContext.current
-
-
-
 
 
 
@@ -80,10 +80,10 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                     color = colorResource(R.color.white),
                             fontSize = 20.sp)
                 Button(onClick ={
-                    detailViewModel.addCart(CartProducts(0,product.name
-                        ,product.image,product.category,product.price,
-                        product.brand,ordered.value,"gaye_yilmaz"))
-                       ordered.value = 0         },
+                    val cartProduct= CartProducts(0,product.name,product.image,product.category,product.price,product.brand,ordered.value,username)
+                    var cartProductJson = Gson().toJson(cartProduct)
+                       navController.navigate( "cartScreen/$cartProductJson" )
+                       ordered.value = 0 },
                     modifier = Modifier.width(150.dp).height(50.dp),
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.main_color))
@@ -110,6 +110,7 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                 elevation = CardDefaults.cardElevation(8.dp),
             colors= CardDefaults.cardColors(colorResource(R.color.card_container_background)))
             {
+
                 IconButton(onClick = { /* do something */ },
                     modifier = Modifier.padding(start =310.dp)
                 ) {
@@ -119,10 +120,6 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    /**val productImage = product.image
-                    Image(modifier = Modifier.size(200.dp),
-                        painter= painterResource(context.resources.getIdentifier(
-                            productImage,"drawable",context.packageName)), contentDescription = "picture")**/
                     val url = "http://kasimadalan.pe.hu/urunler/resimler/${product.image}"
                     GlideImage(imageModel = url,  modifier  = Modifier.size(200.dp))
                     IconButton(onClick = { /* do something */ },

@@ -1,5 +1,8 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
+import android.app.admin.TargetUser
+import android.text.LoginFilter
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,34 +34,48 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomAppBar
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomCartCard
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomTopAppBAr
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.CartViewModel
 import kotlinx.coroutines.launch
 
+import com.android.volley.Request
+import com.android.volley.Response
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartScreen(navController: NavController,cartViewModel: CartViewModel){
+fun CartScreen(navController: NavController,cartViewModel: CartViewModel,username:String,cartProduct: CartProducts){
 
 
+    var totalPrice = 0
 
     val cartProductsList = cartViewModel.cartProductsList.observeAsState(listOf())
 
-    var price = 0
-    var totalPrice = 0
-    for(cartProduct in cartProductsList.value){
-        totalPrice = (cartProduct.ordered* cartProduct.price)+totalPrice
+    for(cartProduct in cartProductsList.value) {
+        totalPrice = (cartProduct.ordered * cartProduct.price) + totalPrice
     }
-
-
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
     val context = LocalContext.current
+
+    LaunchedEffect(true) {
+        Log.e("DELETEOP", "CHOOSEN-CARTSCREEN-1: ${cartProduct.name}")
+        cartViewModel.addCart(cartProduct)
+        cartViewModel.loadCartProducts(username)
+
+    }
+
+
+
     Scaffold(
 
         topBar = {
@@ -137,37 +154,50 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel){
 
 
     )
-    { innerpadding->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(colorResource(R.color.white))
-                .padding(innerpadding)
-                .padding(10.dp)
-        ){
-            itemsIndexed(cartProductsList.value){index,cartProduct->
+    { innerpadding ->
 
 
-                CustomCartCard(
-                    cartProduct = cartProduct,
-                    context = context,
-                    onDeleteClick = {
-                        scope.launch {
-                            val sb = snackbarHostState.showSnackbar(
-                                message = "Delete the ${cartProduct.name} from cart?",
-                                actionLabel ="YES")
-                            if(sb == SnackbarResult.ActionPerformed){
-                                cartViewModel.delete(cartProduct.cartId)
+
+        Log.e("CartProduct","CartScreen: ${cartProductsList.value.size}")
+        for (cartProduct in cartProductsList.value) {
+            totalPrice = (cartProduct.ordered * cartProduct.price) + totalPrice
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorResource(R.color.white))
+                    .padding(innerpadding)
+                    .padding(10.dp)
+            ) {
+                itemsIndexed(cartProductsList.value) { index, cartProduct ->
+
+
+                    CustomCartCard(
+                        cartProduct = cartProduct,
+                        context = context,
+                        onDeleteClick = {
+                            scope.launch {
+                                val sb = snackbarHostState.showSnackbar(
+                                    message = "Delete the ${cartProduct.name} from cart?",
+                                    actionLabel = "YES"
+                                )
+                                if (sb == SnackbarResult.ActionPerformed) {
+                                    cartViewModel.delete(cartProduct.cartId,cartProduct.username)
+                                }
                             }
-                        }
-                    }
-                )
+                        },
+                        onUpdateClick ={
+                            cartViewModel.addCart(cartProduct)
 
+
+                        }
+                    )
+
+                }
             }
+
+
         }
 
+    }}
 
-
-    }
-
-}

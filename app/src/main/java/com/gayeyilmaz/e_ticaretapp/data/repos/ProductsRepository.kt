@@ -1,11 +1,14 @@
 package com.gayeyilmaz.e_ticaretapp.data.repos
 
 
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.gayeyilmaz.e_ticaretapp.data.datasources.ProductsDatasource
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 
 class ProductsRepository(var productsDatasource: ProductsDatasource) {
+
 
 
     suspend fun loadCategories(): List<String>{
@@ -19,15 +22,14 @@ class ProductsRepository(var productsDatasource: ProductsDatasource) {
     }
 
 
-   /** suspend fun search(searchText:String):List<Products> {
-        return productsDatasource.search(searchText)
-    }**/
+
     suspend fun addCart(cartProduct: CartProducts){
-        return productsDatasource.addCart(cartProduct)
+
+      return productsDatasource.addCart(cartProduct)
     }
 
-    suspend fun delete(id:Int){
-       productsDatasource.delete(id)
+    suspend fun delete(id:Int,username:String){
+       productsDatasource.delete(id,username)
     }
 
 }

@@ -1,5 +1,7 @@
 package com.gayeyilmaz.e_ticaretapp.ui.viewmodels
 
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
@@ -13,9 +15,6 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel@Inject constructor(var productRepository : ProductsRepository) : ViewModel() {
 
-    fun addCart(cartProduct:CartProducts){
-        CoroutineScope(Dispatchers.Main).launch {
-            productRepository.addCart(cartProduct)
-        }
-    }
+
+
 }

@@ -24,12 +24,14 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.gayeyilmaz.e_ticaretapp.R
+import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
+import com.google.gson.Gson
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomBottomAppBar(navController: NavController){
-
+               val cartProduct = CartProducts(0,"","","",0,"",0,"")
 
 
                 BottomAppBar(
@@ -69,7 +71,9 @@ fun CustomBottomAppBar(navController: NavController){
                         FloatingActionButton(
                             modifier = Modifier,
                             onClick = {
-                                navController.navigate( "cartScreen" )
+                                val cartProduct = CartProducts(0,"","","",0,"",0,"")
+                                var cartProductJson = Gson().toJson(cartProduct)
+                                navController.navigate( "cartScreen/$cartProductJson" )
                                       /* do something */ },
                            shape = CircleShape,
                             containerColor = colorResource(R.color.white),

@@ -1,6 +1,7 @@
 package com.gayeyilmaz.e_ticaretapp.retrofit
 
 import com.gayeyilmaz.e_ticaretapp.data.entity.CRUDResponse
+import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProductsResponse
 import com.gayeyilmaz.e_ticaretapp.data.entity.ProductsResponse
 import retrofit2.Response
@@ -25,20 +26,21 @@ interface ProductsDao {
                          @Field("kategori") category:String,
                          @Field("fiyat") price:Int,
                          @Field("marka") brand:String,
-                         @Field("siparisAdedi") ordered:Int,
-                         @Field("kullaniciAdi") username:String, ) : CRUDResponse
+                         @Field("siparisAdeti") ordered:Int,
+                         @Field("kullaniciAdi") username:String ): CRUDResponse
 
 
 
     //http://kasimadalan.pe.hu/urunler/sepettekiUrunleriGetir.php
     @POST("urunler/sepettekiUrunleriGetir.php")
     @FormUrlEncoded
-    suspend fun  loadCartProducts(@Field("kullaniciAdi") username:String) : CartProductsResponse
+    suspend fun  loadCartProducts(@Field("kullaniciAdi") kullaniciAdi:String): CartProductsResponse
 
     //http://kasimadalan.pe.hu/urunler/sepettenUrunSil.php
-    @POST("/urunler/sepettenUrunSil.php")
+    @POST("urunler/sepettenUrunSil.php")
     @FormUrlEncoded
-    suspend fun  delete(@Field("sepedId") id:Int): CRUDResponse
+    suspend fun  delete(@Field("sepetId") id:Int,
+                        @Field("kullaniciAdi") kullaniciAdi:String): CRUDResponse
      //http://kasimadalan.pe.hu/urunler/tumUrunleriGetir.php
 
     /** @POST("/urunler/tumUrunleriGetir.php")

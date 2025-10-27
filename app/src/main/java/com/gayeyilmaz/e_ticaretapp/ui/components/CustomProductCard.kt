@@ -1,6 +1,7 @@
 package com.gayeyilmaz.e_ticaretapp.ui.components
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -68,22 +69,13 @@ fun CustomProductCard(navController: NavController,product: Products,context: Co
                     .clickable {
                         val productJson = Gson().toJson(product)
                         navController.navigate("detailScreen/$productJson")
+                        Log.e("DELETEOP", "CHOOSEN-1: ${product.name}")
                     }
                     .padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val productImage = product.image
-               /** Image(
-                    painter = painterResource(
-                        context.resources.getIdentifier(
-                            productImage,
-                            "drawable",
-                            context.packageName
-                        )
-                    ),
-                    contentDescription = "product image",
-                    modifier = Modifier.size(80.dp)
-                )**/
+
                 val url = "http://kasimadalan.pe.hu/urunler/resimler/${product.image}"
                 GlideImage(imageModel = url,  modifier = Modifier.size(80.dp) )
 
