@@ -55,7 +55,7 @@ fun AppNavigation(mainViewModel: MainViewModel,detailViewModel: DetailViewModel,
         }
 
         composable("favoriteScreen"){
-            FavoriteScreen(navController,favoriteViewModel=favoriteViewModel)
+            FavoriteScreen(navController, favoriteViewModel =favoriteViewModel)
         }
     }
 }

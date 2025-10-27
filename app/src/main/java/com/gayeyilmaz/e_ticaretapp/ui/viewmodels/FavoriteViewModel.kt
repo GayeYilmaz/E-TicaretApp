@@ -6,4 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(var productRepository : ProductsRepository) : ViewModel() {
+    val favoriteProductsList = productRepository.favoriteProductsList
+
+
+
+
 }

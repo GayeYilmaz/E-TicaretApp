@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.gayeyilmaz.e_ticaretapp.R
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
+import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.google.gson.Gson
 
 
@@ -49,7 +50,8 @@ fun CustomBottomAppBar(navController: NavController){
                         ) {
                             Icon(Icons.Filled.Home, contentDescription = "Localized description", tint = colorResource(R.color.white))
                         }
-                        IconButton(onClick = {  navController.navigate( "favoriteScreen" )},
+                        IconButton(onClick = {
+                            navController.navigate( "favoriteScreen" )},
                             modifier = Modifier.weight(1f)
                             ) {
                             Icon(

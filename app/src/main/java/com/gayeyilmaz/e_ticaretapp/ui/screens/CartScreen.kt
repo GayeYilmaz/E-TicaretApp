@@ -136,28 +136,15 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                     ) {
                         Text(text = "Pay the Cart")
                     }
-
-
                 }
                 CustomBottomAppBar(navController)
             }
-
-
-
-
-
         },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         }
-
-
-
     )
     { innerpadding ->
-
-
-
         Log.e("CartProduct","CartScreen: ${cartProductsList.value.size}")
         for (cartProduct in cartProductsList.value) {
             totalPrice = (cartProduct.ordered * cartProduct.price) + totalPrice
@@ -188,16 +175,10 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                         },
                         onUpdateClick ={
                             cartViewModel.addCart(cartProduct)
-
-
                         }
                     )
-
                 }
             }
-
-
         }
-
     }}
 

@@ -64,6 +64,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.LaunchedEffect
+import com.gayeyilmaz.e_ticaretapp.data.entity.FavoriteProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 
 
@@ -73,8 +74,8 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
     var scrollState = rememberScrollState()
     val searchQuery = remember { mutableStateOf("") }
+    val favList = mainViewModel.favoriteProductsList
 
-    var favoriteProductsList = mutableListOf<Products>()
 
 
 
@@ -123,7 +124,6 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                         .clip(CircleShape)
                         .size(36.dp)
                         .background(colorResource(R.color.main_color)),
-
                 ){
                     Icon(Icons.Filled.Storefront,
                         contentDescription = "Localized description",
@@ -133,8 +133,6 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
-
-
                 ){
                     OutlinedTextField(
                         value = searchQuery.value,
@@ -162,24 +160,11 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                         shape = RoundedCornerShape(30.dp),
                         singleLine = true,
                     )
-
-
-
-
                 }
-
-
-
-
             }
-
-
-
-
-
         },
         bottomBar = {
-            CustomBottomAppBar(navController)
+            CustomBottomAppBar(navController,)
         }
     ){innerpadding ->
         Column(
@@ -366,16 +351,39 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+
                     if(!(productsList.value==null)){
                         items(productsList.value) { product ->
-                            CustomProductCard(navController=navController,product=product,context=context,favoriteProductsList)
+                            CustomProductCard(navController=navController,
+                                product=product,
+                                context=context,
+                                onFavoriteClick ={ favProduct ->
+                                    //Log.e("FAV","${favProduct.name} - In Favor :${favProduct.isFavorite}")
+                                    if(favProduct.isFavorite == true){
+                                        Log.e("FAV","${favProduct.name} - Added :${favList} ")
+                                        favList.add(favProduct)
+                                    }else{
+                                        val index = favList.indexOfFirst {it.id == favProduct.id  }
+                                        favList.removeAt(index)
 
+                                        Log.e("FAV","${product.name} - Deleted :${favList}")
+                                    }
+
+
+                            } ,
+                                isFavorite=favList.any { it.id == product.id }
+
+
+
+
+                            )
                         }
 
                     }
 
                 }
-           // }
+
+
 
 
         }

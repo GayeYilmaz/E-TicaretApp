@@ -39,18 +39,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gayeyilmaz.e_ticaretapp.R
+import com.gayeyilmaz.e_ticaretapp.data.entity.FavoriteProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
+import com.gayeyilmaz.e_ticaretapp.ui.screens.FavoriteScreen
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
 import com.google.gson.Gson
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.launch
 
 @Composable
-fun CustomProductCard(navController: NavController,product: Products,context: Context,favoriteProductsList: MutableList<Products> ){
+fun CustomProductCard(navController: NavController, product: Products, context: Context, onFavoriteClick: (favoriteProduct: FavoriteProducts) -> Unit,  isFavorite: Boolean){
 
-    var isFavorite = remember { mutableStateOf(false) }
+    var isFavorite = remember { mutableStateOf(isFavorite) }
+
+
+
+
     Card(
         elevation = CardDefaults.cardElevation(8.dp),
-        // border = BorderStroke(2.dp,colorResource(R.color.text_color)),
         modifier = Modifier
             .fillMaxWidth()
         ,
@@ -65,13 +71,20 @@ fun CustomProductCard(navController: NavController,product: Products,context: Co
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             IconButton(
-                onClick = { isFavorite.value = !isFavorite.value
-                          favoriteProductsList.add(product)
+                onClick = {
+                    isFavorite.value = !isFavorite.value
+                    Log.e("FAV","${product.name} - In Favor :${isFavorite.value}")
+                    onFavoriteClick(FavoriteProducts(product.id,product.name,product.image,product.category,product.price,product.brand,isFavorite.value))
+
+
+
+
 
                 },
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Icon(
+
                     imageVector = if(isFavorite.value){ Icons.Filled.Favorite}else{Icons.Filled.FavoriteBorder},
                     contentDescription = "Add to favorites",
                     tint = if (isFavorite.value) colorResource(R.color.hearth_color) else MaterialTheme.colorScheme.onSurface
@@ -79,6 +92,7 @@ fun CustomProductCard(navController: NavController,product: Products,context: Co
 
                 )
             }
+            Log.e("FAV","${product.name} - In Favor Outside Icon Button :${isFavorite.value}")
 
             Column(
                 modifier = Modifier

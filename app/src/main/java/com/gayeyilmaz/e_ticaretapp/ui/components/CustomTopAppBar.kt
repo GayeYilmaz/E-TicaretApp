@@ -20,11 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.gayeyilmaz.e_ticaretapp.R
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
+import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopAppBAr(navController: NavController,name:String){
+    val cartProduct = CartProducts(0,"","","",0,"",0,"")
+    val product = Products(0,"","","",0,"")
+
     CenterAlignedTopAppBar(
         modifier = Modifier.statusBarsPadding().height(60.dp)
             .clip(RoundedCornerShape(topStart=0.dp, topEnd = 0.dp, bottomStart = 30.dp, bottomEnd =30.dp)),
@@ -34,7 +38,11 @@ fun CustomTopAppBAr(navController: NavController,name:String){
             titleContentColor = colorResource(R.color.white)
         ),
         navigationIcon = {
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = {
+
+                    navController.navigate("mainScreen")
+
+                /* do something */ }) {
                 Icon(
                     Icons.Filled.Close,
                     tint = colorResource(R.color.white),
@@ -45,7 +53,7 @@ fun CustomTopAppBAr(navController: NavController,name:String){
         actions = {
             if(name =="Details"){
                 IconButton(onClick = {
-                    val cartProduct = CartProducts(0,"","","",0,"",0,"")
+
                     var cartProductJson = Gson().toJson(cartProduct)
                     navController.navigate("cartScreen/$cartProductJson") }) {
                     Icon(
