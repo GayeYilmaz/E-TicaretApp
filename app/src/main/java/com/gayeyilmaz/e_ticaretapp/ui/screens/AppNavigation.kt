@@ -11,11 +11,12 @@ import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.CartViewModel
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.DetailViewModel
+import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.FavoriteViewModel
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
 import com.google.gson.Gson
 
 @Composable
-fun AppNavigation(mainViewModel: MainViewModel,detailViewModel: DetailViewModel,cartViewModel: CartViewModel,username:String){
+fun AppNavigation(mainViewModel: MainViewModel,detailViewModel: DetailViewModel,cartViewModel: CartViewModel,favoriteViewModel: FavoriteViewModel,username:String){
     val navController = rememberNavController()
 
     NavHost(navController=navController,startDestination="mainScreen"){
@@ -40,6 +41,7 @@ fun AppNavigation(mainViewModel: MainViewModel,detailViewModel: DetailViewModel,
 
 
         composable("cartScreen/{cartProduct}",
+
             arguments= listOf(
                 navArgument("cartProduct"){
                     type = NavType.StringType
@@ -50,9 +52,10 @@ fun AppNavigation(mainViewModel: MainViewModel,detailViewModel: DetailViewModel,
                 CartScreen(navController,cartViewModel=cartViewModel,username=username,cartProduct=cartProduct)
             }
 
+        }
 
-
-
+        composable("favoriteScreen"){
+            FavoriteScreen(navController,favoriteViewModel=favoriteViewModel)
         }
     }
 }

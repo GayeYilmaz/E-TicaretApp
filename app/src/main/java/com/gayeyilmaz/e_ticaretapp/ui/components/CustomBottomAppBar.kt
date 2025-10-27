@@ -49,7 +49,7 @@ fun CustomBottomAppBar(navController: NavController){
                         ) {
                             Icon(Icons.Filled.Home, contentDescription = "Localized description", tint = colorResource(R.color.white))
                         }
-                        IconButton(onClick = { /* do something */ },
+                        IconButton(onClick = {  navController.navigate( "favoriteScreen" )},
                             modifier = Modifier.weight(1f)
                             ) {
                             Icon(

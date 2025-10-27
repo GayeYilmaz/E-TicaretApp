@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -43,6 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.buildSpannedString
 import androidx.navigation.NavController
 import com.gayeyilmaz.e_ticaretapp.R
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
@@ -137,19 +139,30 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                         .padding(top = 10.dp,start=20.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
 
+
                 ){
-                    Text(text = product.name,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = colorResource(R.color.add_container_background),
-                        modifier = Modifier
-                    )
+                    Row {
+                        Text(text = product.brand,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = colorResource(R.color.add_container_background),
+                            modifier = Modifier
+                        )
+                        Text(text = " ${product.name}",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = colorResource(R.color.add_container_background),
+                            modifier = Modifier
+                        )
+                    }
+
                     val price =product.price.toString()
+
                     Text(text = "$ $price",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = colorResource(R.color.add_container_background),
-                        modifier = Modifier
+                        modifier = Modifier,
                     )
 
 

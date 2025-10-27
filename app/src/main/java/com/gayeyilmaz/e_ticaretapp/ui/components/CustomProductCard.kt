@@ -6,24 +6,32 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddBox
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,17 +40,20 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gayeyilmaz.e_ticaretapp.R
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
+import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
 import com.google.gson.Gson
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun CustomProductCard(navController: NavController,product: Products,context: Context){
+fun CustomProductCard(navController: NavController,product: Products,context: Context,favoriteProductsList: MutableList<Products> ){
+
+    var isFavorite = remember { mutableStateOf(false) }
     Card(
         elevation = CardDefaults.cardElevation(8.dp),
         // border = BorderStroke(2.dp,colorResource(R.color.text_color)),
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp),
+        ,
         colors= CardDefaults.cardColors(
             containerColor = colorResource(R.color.card_container_background)
         )
@@ -54,12 +65,18 @@ fun CustomProductCard(navController: NavController,product: Products,context: Co
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             IconButton(
-                onClick = { /* do something */ },
+                onClick = { isFavorite.value = !isFavorite.value
+                          favoriteProductsList.add(product)
+
+                },
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Icon(
-                    Icons.Filled.FavoriteBorder,
-                    contentDescription = "Add to favorites"
+                    imageVector = if(isFavorite.value){ Icons.Filled.Favorite}else{Icons.Filled.FavoriteBorder},
+                    contentDescription = "Add to favorites",
+                    tint = if (isFavorite.value) colorResource(R.color.hearth_color) else MaterialTheme.colorScheme.onSurface
+
+
                 )
             }
 
@@ -78,13 +95,37 @@ fun CustomProductCard(navController: NavController,product: Products,context: Co
 
                 val url = "http://kasimadalan.pe.hu/urunler/resimler/${product.image}"
                 GlideImage(imageModel = url,  modifier = Modifier.size(80.dp) )
+                Box(modifier = Modifier.width(200.dp).height(20.dp)
+                    .background(colorResource(R.color.bottom_bar_background)),
+                    contentAlignment = Alignment.Center
+                ) {
 
-                Text(
-                    fontSize =15.sp,
-                    fontWeight = FontWeight.Bold,
-                    text = product.name,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
+                    Text(fontSize = 12.sp,
+                        text = "Fast Delivery",
+                        color = colorResource(R.color.background),
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+
+
+                ){
+                    Text(
+                        fontSize =15.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        text = product.brand,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                    Text(
+                        fontSize =15.sp,
+                        fontWeight = FontWeight.Bold,
+                        text =" ${product.name}",
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -92,20 +133,13 @@ fun CustomProductCard(navController: NavController,product: Products,context: Co
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        fontSize =20.sp,
+                        fontSize =18.sp,
                         fontWeight = FontWeight.Bold,
                         text = "$ ${product.price}",
                         modifier = Modifier.weight(1f),
                         color = colorResource(R.color.add_container_background)
                     )
-                    IconButton(onClick = { /* do something */ },
-                    ) {
-                        Icon(
-                            Icons.Filled.AddBox,
-                            contentDescription = "Add to cart",
-                            tint = colorResource(R.color.add_container_background)
-                        )
-                    }
+
                 }
             }
         }

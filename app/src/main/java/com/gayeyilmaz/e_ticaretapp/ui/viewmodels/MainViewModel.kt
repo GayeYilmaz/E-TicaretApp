@@ -16,8 +16,9 @@ class MainViewModel @Inject constructor(var productRepository : ProductsReposito
 
     var productsList = MutableLiveData<List<Products>>()
 
+    var favoriteProductsList = mutableListOf<Products>()
 
-    var categoriesList = MutableLiveData<List<String>>()
+
     init{
         loadProducts()
         loadCategories()
@@ -26,7 +27,7 @@ class MainViewModel @Inject constructor(var productRepository : ProductsReposito
 
     fun loadCategories(){
         CoroutineScope(Dispatchers.Main).launch {
-            categoriesList.value=productRepository.loadCategories()
+           // categoriesList.value=productRepository.loadCategories()
 
         }
     }

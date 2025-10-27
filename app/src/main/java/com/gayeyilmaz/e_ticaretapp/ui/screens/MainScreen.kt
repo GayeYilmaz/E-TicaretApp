@@ -1,7 +1,10 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
+import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,8 +14,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -56,8 +61,11 @@ import com.gayeyilmaz.e_ticaretapp.ui.components.CustomProductCard
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.LaunchedEffect
-import hilt_aggregated_deps._com_gayeyilmaz_e_ticaretapp_ui_viewmodels_CartViewModel_HiltModules_BindsModule
+import com.gayeyilmaz.e_ticaretapp.data.entity.Products
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,6 +73,9 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
     var scrollState = rememberScrollState()
     val searchQuery = remember { mutableStateOf("") }
+
+    var favoriteProductsList = mutableListOf<Products>()
+
 
 
 
@@ -75,7 +86,25 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
     val productsList = mainViewModel.productsList.observeAsState(listOf())
 
-    val categoryList = mainViewModel.categoriesList.observeAsState(listOf())
+    var categoryList = mutableListOf<String>()
+    for(product in productsList.value){
+        if(categoryList.isNotEmpty()){
+            if(categoryList.contains(product.category)){
+                Log.e("CATEGORY","listede ${product.category}")
+            }
+            else{
+                categoryList.add(product.category)
+                Log.e("CATEGORY","listede değil  ${product.category}")
+            }
+
+        }else{
+            categoryList.add(product.category)
+            Log.e("CATEGORY","${product.category}")
+        }
+
+
+    }
+
 
     LaunchedEffect(true) {
         mainViewModel.loadProducts()
@@ -84,13 +113,12 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
     Scaffold(
 
         topBar = {
-            Row(
-                modifier = Modifier.padding(start=16.dp,end=16.dp, top=30.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Row(modifier = Modifier.statusBarsPadding().padding(horizontal = 16.dp)
             ){
                 IconButton(
                     onClick = { /* do something */ },
                     modifier = Modifier
+                        .offset(y=17.dp)
                         .padding(end = 10.dp)
                         .clip(CircleShape)
                         .size(36.dp)
@@ -102,40 +130,44 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                         modifier = Modifier.size(30.dp),
                         tint = Color.White)
                 }
-                Box(
-                    modifier = Modifier.height(56.dp),
-                            contentAlignment = Alignment.Center
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+
 
                 ){
                     OutlinedTextField(
-                        value=searchQuery.value,
-                        shape = RoundedCornerShape(50.dp),
-                        onValueChange = {searchQuery.value = it
+                        value = searchQuery.value,
+                        onValueChange = {
+                            searchQuery.value = it
                            // mainViewModel.search(it)
-                            // mainViewModel.search(it)
                         },
-                        label={Text(
-                            modifier = Modifier,
-                            text =stringResource(R.string.main_screen_search_hint),
-
-                        ) },
-                        leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Seacrh Field", tint = colorResource(R.color.black_1))},
+                        label = { Text(modifier = Modifier,
+                            text = "Search")},
+                        leadingIcon = { Icon(
+                            Icons.Filled.Search,
+                            contentDescription = "Search Field",
+                            tint = colorResource(id = R.color.main_color))
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = colorResource(R.color.white),
-                            unfocusedContainerColor = colorResource(R.color.background),
-                            disabledContainerColor  = colorResource(R.color.white),
-                            focusedLabelColor  = colorResource(R.color.main_color),
-                            cursorColor  = colorResource(R.color.main_color),
-                            focusedBorderColor = colorResource(R.color.main_color),
-                            unfocusedBorderColor = colorResource(R.color.text_color),
+                            focusedContainerColor = colorResource(id = R.color.white),
+                            unfocusedContainerColor = colorResource(id = R.color.white),
+                            disabledContainerColor = colorResource(id = R.color.white),
+                            focusedLabelColor = colorResource(id = R.color.main_color),
+                            cursorColor = colorResource(id = R.color.main_color),
+                            focusedBorderColor = colorResource(id = R.color.main_color),
+                            unfocusedBorderColor = colorResource(id = R.color.main_color),
+                        ),
+                        shape = RoundedCornerShape(30.dp),
+                        singleLine = true,
+                    )
 
-                            ),
 
-                        )
 
 
                 }
+
 
 
 
@@ -298,7 +330,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                 ) {
 
 
-                    items(categoryList.value){category->
+                    items(categoryList){category->
                         CategoriesCard(category)
                     }
 
@@ -336,7 +368,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                 ) {
                     if(!(productsList.value==null)){
                         items(productsList.value) { product ->
-                            CustomProductCard(navController=navController,product=product,context=context)
+                            CustomProductCard(navController=navController,product=product,context=context,favoriteProductsList)
 
                         }
 

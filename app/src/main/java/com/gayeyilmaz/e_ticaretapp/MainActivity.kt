@@ -12,12 +12,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModel
 import com.android.volley.toolbox.Volley
 import com.gayeyilmaz.e_ticaretapp.ui.screens.AppNavigation
 import com.gayeyilmaz.e_ticaretapp.ui.screens.MainScreen
 import com.gayeyilmaz.e_ticaretapp.ui.theme.ETicaretAppTheme
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.CartViewModel
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.DetailViewModel
+import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.FavoriteViewModel
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +28,7 @@ class MainActivity : ComponentActivity() {
     val mainViewModel : MainViewModel by viewModels()
     val detailViewModel : DetailViewModel by viewModels()
     val cartViewModel : CartViewModel by viewModels()
+    val favoriteViewModel : FavoriteViewModel by viewModels()
 
     val username="gaye_yilmaz"
 
@@ -39,6 +42,7 @@ class MainActivity : ComponentActivity() {
                     mainViewModel = mainViewModel,
                     detailViewModel = detailViewModel,
                     cartViewModel = cartViewModel,
+                    favoriteViewModel=favoriteViewModel,
                     username=username
 
                 )
