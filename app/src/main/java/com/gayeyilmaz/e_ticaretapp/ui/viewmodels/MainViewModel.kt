@@ -1,9 +1,5 @@
 package com.gayeyilmaz.e_ticaretapp.ui.viewmodels
 
-import android.util.Log
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gayeyilmaz.e_ticaretapp.data.entity.FavoriteProducts
@@ -32,22 +28,18 @@ class MainViewModel @Inject constructor(var productRepository : ProductsReposito
     fun loadFavorites(){
         CoroutineScope(Dispatchers.Main).launch {
             productRepository.loadFavorites()
-            Log.e("fav-delete","mainview-load - ${favoritiesList}")
         }
     }
 
     fun addFavorites(favoriteProducts: FavoriteProducts){
         CoroutineScope(Dispatchers.Main).launch {
             favoritiesList.add(favoriteProducts)
-          // productRepository.add(favoriteProducts)
-            Log.e("fav-delete","mainview-add list - ${favoritiesList}")
             loadFavorites()
         }
 
     }
 
     fun deleteFavorites(favoriteProducts: FavoriteProducts){
-       // Log.e("FAV","MainViewModel- ${favoriteProducts.name} - Deleted :${favoritiesList}")
         CoroutineScope(Dispatchers.Main).launch {
             if(favoriteProducts.isFavorite==false){
                 favoriteProducts.isFavorite = true
@@ -55,8 +47,6 @@ class MainViewModel @Inject constructor(var productRepository : ProductsReposito
             }else{
                 favoritiesList.remove(favoriteProducts)
             }
-
-            Log.e("fav-delete","mainview-delete list - ${favoritiesList}")
             loadFavorites()
         }
     }
@@ -74,10 +64,4 @@ class MainViewModel @Inject constructor(var productRepository : ProductsReposito
         }
     }
 
-   /** fun search(searchText:String){
-        CoroutineScope(Dispatchers.Main).launch {
-            productsList.value=productRepository.search(searchText)
-
-        }
-    }**/
 }

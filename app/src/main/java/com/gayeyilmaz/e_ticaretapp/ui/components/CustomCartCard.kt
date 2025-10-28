@@ -1,6 +1,7 @@
 package com.gayeyilmaz.e_ticaretapp.ui.components
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.CheckBox
+import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
 import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.CreditCardOff
 import androidx.compose.material.icons.filled.Delete
@@ -49,10 +51,12 @@ import kotlin.Unit
 
 
 @Composable
-fun CustomCartCard(cartProduct: CartProducts, context: Context,onDeleteClick:(Int) -> Unit,onUpdateClick:(cartProduct:CartProducts) -> Unit   ){
+fun CustomCartCard(cartProduct: CartProducts, context: Context,onDeleteClick:(Int) -> Unit,onUpdateClick:(cartProduct:CartProducts) -> Unit ,onCheckClick:(isChecked:Boolean) -> Unit  ){
     var ordered = remember { mutableStateOf(cartProduct.ordered) }
     var price = 0
     var totalPrice = 0
+    var isChecked = remember { mutableStateOf(true) }
+
 
     Card (
         modifier = Modifier.padding(5.dp),
@@ -74,9 +78,13 @@ fun CustomCartCard(cartProduct: CartProducts, context: Context,onDeleteClick:(In
 
                 )
                 {
-                    IconButton(onClick = { /* yapılacak işaretle */ }) {
+                    IconButton(onClick = {
+                        Log.e("isChecked","cartProduct  ${cartProduct.name}- ${isChecked.value}")
+                        isChecked.value = !isChecked.value
+                        onCheckClick(isChecked.value)
+                    }) {
                         Icon(
-                            imageVector = Icons.Filled.CheckBox,
+                            imageVector = if(!isChecked.value) Icons.Filled.CheckBoxOutlineBlank else{Icons.Filled.CheckBox},
                             contentDescription = "Add Cart",
 
                         )

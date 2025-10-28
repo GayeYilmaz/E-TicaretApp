@@ -59,9 +59,6 @@ import com.skydoves.landscapist.glide.GlideImage
 fun DetailScreen(navController: NavController,product : Products,detailViewModel: DetailViewModel,username:String){
 
     var ordered = remember { mutableStateOf(0) }
-    val context = LocalContext.current
-
-
 
     Scaffold(
         topBar = {
@@ -99,6 +96,7 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
 
 
     ) {innerpadding->
+        //CONTENT
         Column(modifier = Modifier
             .background(colorResource(R.color.white))
             .padding(innerpadding)
@@ -107,7 +105,7 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
           ,
             horizontalAlignment = Alignment.CenterHorizontally
         )
-        {
+        {   //IMAGES
             Card (modifier = Modifier.padding(5.dp).fillMaxWidth().height(300.dp),
                 elevation = CardDefaults.cardElevation(8.dp),
             colors= CardDefaults.cardColors(colorResource(R.color.card_container_background)))
@@ -133,7 +131,8 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                             tint = colorResource(R.color.black_1))
                     }
                 }
-            }
+            }   //DETAILS
+
                 Row(
                     modifier = Modifier.fillMaxWidth()
                         .padding(top = 10.dp,start=20.dp),

@@ -73,7 +73,6 @@ fun CustomProductCard(navController: NavController, product: Products, context: 
             IconButton(
                 onClick = {
                     isFavorite.value = !isFavorite.value
-                    Log.e("fav-delete","${product.name} - In Favor :${isFavorite.value}")
                     onFavoriteClick(FavoriteProducts(product.id,product.name,product.image,product.category,product.price,product.brand,isFavorite.value))
                 },
                 modifier = Modifier.align(Alignment.End)

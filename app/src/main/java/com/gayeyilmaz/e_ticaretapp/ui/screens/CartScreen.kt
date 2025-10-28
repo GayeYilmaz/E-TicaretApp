@@ -32,6 +32,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
@@ -54,13 +55,13 @@ import com.android.volley.Response
 fun CartScreen(navController: NavController,cartViewModel: CartViewModel,username:String,cartProduct: CartProducts){
 
 
-    var totalPrice = 0
-
     val cartProductsList = cartViewModel.cartProductsList.observeAsState(listOf())
 
-    for(cartProduct in cartProductsList.value) {
-        totalPrice = (cartProduct.ordered * cartProduct.price) + totalPrice
-    }
+    //TOTAL PRICE OF CART PRODUCTS
+    val cartPriceTotal = cartProductsList.value.sumOf { it.price * it.ordered }
+    val cartPriceTotalState = remember { mutableStateOf(0) }
+    cartPriceTotalState.value = cartPriceTotal
+    Log.e("isChecked","totalCartPrice ${cartPriceTotal}-")
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -68,7 +69,6 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
     val context = LocalContext.current
 
     LaunchedEffect(true) {
-        Log.e("DELETEOP", "CHOOSEN-CARTSCREEN-1: ${cartProduct.name}")
         cartViewModel.addCart(cartProduct)
         cartViewModel.loadCartProducts(username)
 
@@ -124,7 +124,8 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                         Text(fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color =colorResource(R.color.white),
-                            text =  " ₺${totalPrice}" )
+
+                            text =  " ₺${cartPriceTotalState.value}" )
                     }
                     Button(
                         shape = RoundedCornerShape(10.dp),
@@ -145,9 +146,12 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
         }
     )
     { innerpadding ->
-        Log.e("CartProduct","CartScreen: ${cartProductsList.value.size}")
+
+        var cartCheckedPrice = cartPriceTotal
+        //CONTENT
         for (cartProduct in cartProductsList.value) {
-            totalPrice = (cartProduct.ordered * cartProduct.price) + totalPrice
+
+
 
             LazyColumn(
                 modifier = Modifier
@@ -175,6 +179,17 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                         },
                         onUpdateClick ={
                             cartViewModel.addCart(cartProduct)
+                        },
+                        onCheckClick={ isChecked->
+                            Log.e("isChecked","cartProduct  ${cartProduct.name}- ${isChecked.toString()}")
+                            if(!isChecked){
+                                 Log.e("isChecked","cartProduct  ${cartProduct.name}- ${isChecked.toString()}")
+                                cartCheckedPrice = cartCheckedPrice - (cartProduct.price * cartProduct.ordered)
+                                cartPriceTotalState.value = cartCheckedPrice
+                            }else{
+                                cartCheckedPrice = cartCheckedPrice + (cartProduct.price * cartProduct.ordered)
+                                cartPriceTotalState.value = cartCheckedPrice
+                            }
                         }
                     )
                 }

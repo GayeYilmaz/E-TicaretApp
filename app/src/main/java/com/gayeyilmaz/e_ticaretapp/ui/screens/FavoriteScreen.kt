@@ -33,12 +33,9 @@ import kotlinx.coroutines.launch
 fun FavoriteScreen(navController: NavController,favoriteViewModel: FavoriteViewModel){
 
     val favoritiesList = favoriteViewModel.favoritiesList
-    Log.e("fav-delete","favoite screen opended}")
-    Log.e("fav-delete","load list size - ${favoritiesList.size}")
-
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    val context = LocalContext.current
+
 
     LaunchedEffect(true) {
         favoriteViewModel.loadFavorites()
@@ -57,11 +54,11 @@ fun FavoriteScreen(navController: NavController,favoriteViewModel: FavoriteViewM
 
 
     ){ innerpadding ->
+        //FAVORITE CARD
         LazyColumn(
             modifier = Modifier.padding(innerpadding)
         ) {
-            items(favoritiesList.size){
-                i ->
+            items(favoritiesList.size){ i ->
                 CustomFavoriteCard(navController,
                     favoritiesList[i],
                     onDeleteClick = { favProduct->
@@ -72,23 +69,10 @@ fun FavoriteScreen(navController: NavController,favoriteViewModel: FavoriteViewM
                             )
                             if (sb == SnackbarResult.ActionPerformed) {
                                 favoriteViewModel.deleteFavorites(favProduct)
-
-
                             }
                         }
-
-
-
                 })
-
             }
-           /** if(favList.size !=0){
-                for(i in favList){
-                    CustomFavoriteCard(navController,i)
-                }
-
-            }**/
-
 
         }
 

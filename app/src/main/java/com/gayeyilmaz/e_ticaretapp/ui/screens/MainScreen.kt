@@ -58,6 +58,7 @@ import com.gayeyilmaz.e_ticaretapp.ui.components.CustomProductCard
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.LaunchedEffect
 
 
@@ -87,9 +88,11 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
     Scaffold(
 
+        //TOP BAR
         topBar = {
             Row(modifier = Modifier.statusBarsPadding().padding(horizontal = 16.dp)
             ){
+                //MENU BOTTON
                 IconButton(
                     onClick = { /* do something */ },
                     modifier = Modifier
@@ -99,11 +102,13 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                         .size(36.dp)
                         .background(colorResource(R.color.main_color)),
                 ){
-                    Icon(Icons.Filled.Storefront,
+                    Icon(Icons.Filled.Menu,
                         contentDescription = "Localized description",
                         modifier = Modifier.size(30.dp),
                         tint = Color.White)
                 }
+
+                //SEARCH FIELD
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -135,12 +140,16 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                         singleLine = true,
                     )
                 }
+
+
             }
         },
+        //BOTTOM BAR
         bottomBar = {
-            CustomBottomAppBar(navController,)
+            CustomBottomAppBar(navController)
         }
     ){innerpadding ->
+        //CONTENT
         Column(
             modifier= Modifier
                 .fillMaxSize()
@@ -169,7 +178,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-            //ADD BLOCK
+            //ADVERTISEMENT BLOCK
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -286,20 +295,19 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                //CATEGORIES ROW
                 LazyRow(
                     modifier = Modifier.fillMaxWidth()
-                ) {
-
-
+                )
+                {
                     items(categoriesList.value){category->
                         CategoriesCard(category)
                     }
-
                 }
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
-                ) {
+                )
+                {
                     Text(
                         modifier = Modifier,
                         fontSize = 20.sp,
@@ -316,7 +324,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
-
+                //PRODUCT CARD
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(count = 2),
                     modifier = Modifier
@@ -325,7 +333,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-
+                    //PRODUCT CARD
                     if(!(productsList.value==null)){
                         items(productsList.value) { product ->
                             CustomProductCard(navController=navController,
@@ -343,28 +351,21 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                                         mainViewModel.deleteFavorites(favProduct)
                                         Log.e("FAV","MainScreen- ${product.name} - Deleted :${favoritiesList}")
                                     }
-
-
                             } ,
                                 isFavorite=favoritiesList.any { it.id == product.id }
-
-
-
-
                             )
                         }
-
                     }
 
+
+
+
+
+
+
+
+
                 }
-
-
-
-
         }
-
-
     }
-
-
 }
