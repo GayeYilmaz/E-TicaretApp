@@ -39,7 +39,7 @@ fun FavoriteScreen(navController: NavController,favoriteViewModel: FavoriteViewM
 
     Scaffold (
         topBar = {
-            CustomTopAppBAr(navController,"Favorites")
+            CustomTopAppBAr(navController,"Favorilerim")
         },
         bottomBar = {
             CustomBottomAppBar(navController)

@@ -116,14 +116,14 @@ fun CustomFavoriteCard(navController: NavController,favoriteProducts: FavoritePr
                 Spacer(modifier = Modifier.padding(top=20.dp))
                 Text(fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
-                    text = " Price ₺${favoriteProducts.price} ")
+                    text = " Fiyat ₺${favoriteProducts.price} ")
                 Spacer(modifier =  Modifier.padding(top=5.dp))
             }
             Column(modifier = Modifier,
                 horizontalAlignment = Alignment.End,
                 ) {
                 IconButton(onClick = {
-                    Log.e("FAV","ıcon button on click")
+
                     onDeleteClick(favoriteProducts)
                 },
                     modifier = Modifier.padding(1.dp),
@@ -144,7 +144,7 @@ fun CustomFavoriteCard(navController: NavController,favoriteProducts: FavoritePr
                     Text(
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        text = "Add to Cart")
+                        text = "Sepete Ekle")
                 }
             }
 

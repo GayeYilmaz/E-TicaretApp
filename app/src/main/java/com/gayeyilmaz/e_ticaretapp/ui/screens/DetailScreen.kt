@@ -65,7 +65,7 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
 
     Scaffold(
         topBar = {
-            CustomTopAppBAr(navController,"Details")
+            CustomTopAppBAr(navController,"Ürün Detayı")
         },
         bottomBar = {
             Row (
@@ -92,7 +92,7 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                 ) {
                     Text(
                         fontWeight = FontWeight.Bold,
-                        text = "Add to Cart")
+                        text = "Sepete Ekle")
                 }
             }
         }
@@ -158,7 +158,7 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
 
                     val price =product.price.toString()
 
-                    Text(text = "$ $price",
+                    Text(text = " ₺$price",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = colorResource(R.color.add_container_background),
@@ -220,15 +220,15 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                             )
                         },
                         color = colorResource(R.color.black_1),
-                        text =  "Details")
+                        text =  "Detay")
 
 
                 Text(modifier = Modifier,
                     color = colorResource(R.color.dark_gray),
-                    text = "Shop")
+                    text = "Kargo")
                 Text(modifier = Modifier,
                     color = colorResource(R.color.dark_gray),
-                    text =  "Features")
+                    text =  "Yorumlar")
             }
 
 

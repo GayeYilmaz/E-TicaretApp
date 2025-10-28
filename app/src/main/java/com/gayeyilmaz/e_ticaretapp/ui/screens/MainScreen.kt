@@ -1,10 +1,8 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,7 +47,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,11 +58,7 @@ import com.gayeyilmaz.e_ticaretapp.ui.components.CustomProductCard
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.LaunchedEffect
-import com.gayeyilmaz.e_ticaretapp.data.entity.FavoriteProducts
-import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,19 +68,11 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
     var scrollState = rememberScrollState()
     val searchQuery = remember { mutableStateOf("") }
     val favList = mainViewModel.favoriteProductsList
-
-
-
-
-
-
-   val context = LocalContext.current
-
-    val images = remember{listOf("bilgisyar","gozluk","kemer","telefon")}
-
+    val context = LocalContext.current
     val productsList = mainViewModel.productsList.observeAsState(listOf())
-
     var categoryList = mutableListOf<String>()
+
+    //CATEHORIES
     for(product in productsList.value){
         if(categoryList.isNotEmpty()){
             if(categoryList.contains(product.category)){
@@ -141,7 +126,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                            // mainViewModel.search(it)
                         },
                         label = { Text(modifier = Modifier,
-                            text = "Search")},
+                            text = "Ara")},
                         leadingIcon = { Icon(
                             Icons.Filled.Search,
                             contentDescription = "Search Field",
@@ -184,14 +169,14 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                         modifier = Modifier,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        text = "Hot Sales"
+                        text = "Trend Ürünler"
                     )
                     Text(
                         modifier = Modifier,
                         fontSize = 15.sp,
                         color = colorResource(R.color.text_color),
                         fontWeight = FontWeight.Bold,
-                        text = "see more"
+                        text = "tümünü gör"
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
@@ -256,7 +241,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                                 )
                             ) {
                                 Text(
-                                    text = "Buy Now!",
+                                    text = "ŞİMDİ AL!",
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.Black
@@ -296,14 +281,14 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                         modifier = Modifier,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        text = "Select Category"
+                        text = "Kategori Seç"
                     )
                     Text(
                         modifier = Modifier,
                         fontSize = 15.sp,
                         color = colorResource(R.color.text_color),
                         fontWeight = FontWeight.Bold,
-                        text = "view all"
+                        text = "tümünü göster"
                     )
                 }
 
@@ -330,14 +315,14 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                         modifier = Modifier,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        text = "Products"
+                        text = "Ürünler"
                     )
                     Text(
                         modifier = Modifier,
                         fontSize = 15.sp,
                         color = colorResource(R.color.text_color),
                         fontWeight = FontWeight.Bold,
-                        text = "see more"
+                        text = "tümünü gör"
                     )
                 }
 
@@ -358,7 +343,6 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                                 product=product,
                                 context=context,
                                 onFavoriteClick ={ favProduct ->
-                                    //Log.e("FAV","${favProduct.name} - In Favor :${favProduct.isFavorite}")
                                     if(favProduct.isFavorite == true){
                                         Log.e("FAV","${favProduct.name} - Added :${favList} ")
                                         favList.add(favProduct)

@@ -79,7 +79,7 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
     Scaffold(
 
         topBar = {
-            CustomTopAppBAr(navController,"Cart")
+            CustomTopAppBAr(navController,"Sepetim")
 
         },
         bottomBar = {
@@ -107,10 +107,10 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                     ){
                         Text(fontSize = 12.sp,
                             color =colorResource(R.color.white),
-                            text = "Transport fee :")
+                            text = "Taşıma ücreti :")
                         Text(fontSize = 12.sp,
                             color =colorResource(R.color.white),
-                            text =  "$0 " )
+                            text =  " ₺0 " )
                     }
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -120,11 +120,11 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color =colorResource(R.color.white),
-                            text = "Total :")
+                            text = "Toplam Fiyat :")
                         Text(fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color =colorResource(R.color.white),
-                            text =  "$${totalPrice}" )
+                            text =  " ₺${totalPrice}" )
                     }
                     Button(
                         shape = RoundedCornerShape(10.dp),
@@ -134,7 +134,7 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                         colors = ButtonDefaults.buttonColors(colorResource(R.color.main_color)),
                         onClick = {}
                     ) {
-                        Text(text = "Pay the Cart")
+                        Text(text = "Sepeti Onayla")
                     }
                 }
                 CustomBottomAppBar(navController)

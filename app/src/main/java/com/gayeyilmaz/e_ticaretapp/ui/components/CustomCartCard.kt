@@ -141,7 +141,7 @@ fun CustomCartCard(cartProduct: CartProducts, context: Context,onDeleteClick:(In
                     Text(fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
                         color = colorResource(R.color.text_color),
-                        text = " Price ₺${cartProduct.price} ")
+                        text = " Fiyat ₺${cartProduct.price} ")
                     Spacer(modifier =  Modifier.padding(top=5.dp))
 
                     //ORDERED

@@ -100,7 +100,7 @@ fun CustomProductCard(navController: NavController, product: Products, context: 
                     .clickable {
                         val productJson = Gson().toJson(product)
                         navController.navigate("detailScreen/$productJson")
-                        Log.e("DELETEOP", "CHOOSEN-1: ${product.name}")
+
                     }
                     .padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -115,7 +115,7 @@ fun CustomProductCard(navController: NavController, product: Products, context: 
                 ) {
 
                     Text(fontSize = 12.sp,
-                        text = "Fast Delivery",
+                        text = "Hızlı Teslimat",
                         color = colorResource(R.color.background),
                     )
                 }
@@ -149,7 +149,7 @@ fun CustomProductCard(navController: NavController, product: Products, context: 
                     Text(
                         fontSize =18.sp,
                         fontWeight = FontWeight.Bold,
-                        text = "$ ${product.price}",
+                        text = "₺${product.price}",
                         modifier = Modifier.weight(1f),
                         color = colorResource(R.color.add_container_background)
                     )
