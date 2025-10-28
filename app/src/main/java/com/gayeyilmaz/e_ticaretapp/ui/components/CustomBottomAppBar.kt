@@ -36,7 +36,7 @@ fun CustomBottomAppBar(navController: NavController){
 
 
                 BottomAppBar(
-                    modifier = Modifier.height(80.dp)
+                    modifier = Modifier
                         .clip(RoundedCornerShape(topStart=0.dp, topEnd = 0.dp, bottomStart = 0.dp, bottomEnd = 0.dp)),
                     containerColor = colorResource(R.color.bottom_bar_background),
 
@@ -48,7 +48,7 @@ fun CustomBottomAppBar(navController: NavController){
                         },
                             modifier = Modifier.weight(1f)
                         ) {
-                            Icon(Icons.Filled.Home, contentDescription = "Localized description", tint = colorResource(R.color.white))
+                            Icon(Icons.Filled.Home, contentDescription = "Localized description", tint = colorResource(R.color.icon_color_dark))
                         }
                         IconButton(onClick = {
                             navController.navigate( "favoriteScreen" )},
@@ -56,7 +56,7 @@ fun CustomBottomAppBar(navController: NavController){
                             ) {
                             Icon(
                                 Icons.Filled.Favorite,
-                                contentDescription = "Localized description",tint = colorResource(R.color.white)
+                                contentDescription = "Localized description",tint = colorResource(R.color.icon_color_dark)
                             )
                         }
 
@@ -65,7 +65,7 @@ fun CustomBottomAppBar(navController: NavController){
                             ) {
                             Icon(
                                 Icons.Filled.Person,
-                                contentDescription = "Localized description",tint = colorResource(R.color.white)
+                                contentDescription = "Localized description",tint = colorResource(R.color.icon_color_dark)
                             )
                         }
                     },
@@ -78,11 +78,11 @@ fun CustomBottomAppBar(navController: NavController){
                                 navController.navigate( "cartScreen/$cartProductJson" )
                                       /* do something */ },
                            shape = CircleShape,
-                            containerColor = colorResource(R.color.white),
+                            containerColor = colorResource(R.color.main_color),
                             elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
 
                         ) {
-                            Icon(Icons.Filled.ShoppingBasket, "Localized description")
+                            Icon(Icons.Filled.ShoppingBasket, "Localized description",tint = colorResource(R.color.icon_color_dark))
                         }
                     }
                 )

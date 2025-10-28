@@ -86,7 +86,6 @@ fun CustomProductCard(navController: NavController, product: Products, context: 
 
                 )
             }
-            Log.e("FAV","${product.name} - In Favor Outside Icon Button :${isFavorite.value}")
 
             Column(
                 modifier = Modifier
@@ -104,13 +103,13 @@ fun CustomProductCard(navController: NavController, product: Products, context: 
                 val url = "http://kasimadalan.pe.hu/urunler/resimler/${product.image}"
                 GlideImage(imageModel = url,  modifier = Modifier.size(80.dp) )
                 Box(modifier = Modifier.width(200.dp).height(20.dp)
-                    .background(colorResource(R.color.bottom_bar_background)),
+                    .background(colorResource(R.color.fast_delivery)),
                     contentAlignment = Alignment.Center
                 ) {
 
                     Text(fontSize = 12.sp,
                         text = "Hızlı Teslimat",
-                        color = colorResource(R.color.background),
+                        color = colorResource(R.color.text_color_main),
                     )
                 }
                 Row(

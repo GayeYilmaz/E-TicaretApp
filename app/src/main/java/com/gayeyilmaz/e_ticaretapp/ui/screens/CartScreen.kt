@@ -61,12 +61,12 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
     val cartPriceTotal = cartProductsList.value.sumOf { it.price * it.ordered }
     val cartPriceTotalState = remember { mutableStateOf(0) }
     cartPriceTotalState.value = cartPriceTotal
-    Log.e("isChecked","totalCartPrice ${cartPriceTotal}-")
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-
     val context = LocalContext.current
+
+
 
     LaunchedEffect(true) {
         cartViewModel.addCart(cartProduct)
@@ -88,8 +88,8 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                     modifier = Modifier
                         .clip(
                             RoundedCornerShape(
-                                topStart = 40.dp,
-                                topEnd = 40.dp,
+                                topStart = 0.dp,
+                                topEnd = 0.dp,
                                 bottomStart = 0.dp,
                                 bottomEnd = 0.dp
                             )
@@ -106,10 +106,10 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
 
                     ){
                         Text(fontSize = 12.sp,
-                            color =colorResource(R.color.white),
+                            color =colorResource(R.color.text_color_main),
                             text = "Taşıma ücreti :")
                         Text(fontSize = 12.sp,
-                            color =colorResource(R.color.white),
+                            color =colorResource(R.color.text_color_main),
                             text =  " ₺0 " )
                     }
                     Row(
@@ -119,11 +119,11 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                         Text(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            color =colorResource(R.color.white),
+                            color =colorResource(R.color.text_color_main),
                             text = "Toplam Fiyat :")
                         Text(fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            color =colorResource(R.color.white),
+                            color =colorResource(R.color.text_color_main),
 
                             text =  " ₺${cartPriceTotalState.value}" )
                     }
@@ -169,8 +169,8 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                         onDeleteClick = {
                             scope.launch {
                                 val sb = snackbarHostState.showSnackbar(
-                                    message = "Delete the ${cartProduct.name} from cart?",
-                                    actionLabel = "YES"
+                                    message = " ${cartProduct.name} sepetten kaldırmak istiyormusun?",
+                                    actionLabel = "EVET"
                                 )
                                 if (sb == SnackbarResult.ActionPerformed) {
                                     cartViewModel.delete(cartProduct.cartId,cartProduct.username)
@@ -181,9 +181,7 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                             cartViewModel.addCart(cartProduct)
                         },
                         onCheckClick={ isChecked->
-                            Log.e("isChecked","cartProduct  ${cartProduct.name}- ${isChecked.toString()}")
                             if(!isChecked){
-                                 Log.e("isChecked","cartProduct  ${cartProduct.name}- ${isChecked.toString()}")
                                 cartCheckedPrice = cartCheckedPrice - (cartProduct.price * cartProduct.ordered)
                                 cartPriceTotalState.value = cartCheckedPrice
                             }else{

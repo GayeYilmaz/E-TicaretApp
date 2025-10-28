@@ -8,15 +8,16 @@
     <color name="black">#FF000000</color>
 
 
-    <color name="black_1">#09090B</color>
+    <color name="text_color_main">#09090B</color>
+    <color name="icon_color_dark">#09090B</color>
     <color name="text_color">#80808A</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="main_color">#FC7022</color>
-    <color name="main_color_light">#FFAA78</color>
+    <color name="main_color">#5188BF</color>
     <color name="hearth_color">#E62931</color>
     <color name="dark_gray">#3A3E40</color>
     <color name="background">#F3F3F5</color>
-    <color name="bottom_bar_background">#263659</color>
+    <color name="bottom_bar_background">#FDFDFD</color>
     <color name="add_container_background">#0D1137</color>
     <color name="card_container_background">#F3F3F5</color>
+    <color name="fast_delivery">#5188BF</color>
 </resources>

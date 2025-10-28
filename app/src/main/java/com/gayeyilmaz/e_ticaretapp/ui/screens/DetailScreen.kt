@@ -67,16 +67,16 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
         bottomBar = {
             Row (
                 modifier = Modifier
-                .clip(RoundedCornerShape(topStart=40.dp, topEnd = 40.dp, bottomStart = 0.dp, bottomEnd = 0.dp))
+                .clip(RoundedCornerShape(topStart=0.dp, topEnd = 0.dp, bottomStart = 0.dp, bottomEnd = 0.dp))
                     .background(colorResource(R.color.bottom_bar_background)).padding( vertical = 20.dp, horizontal = 30.dp),
                 verticalAlignment = Alignment.CenterVertically
             ){
                 var total = ordered.value*product.price
                 val totalS = total.toString()
-                Text(text ="$ $totalS", modifier = Modifier
+                Text(text ="₺$totalS", modifier = Modifier
 
                     .weight(1f),
-                    color = colorResource(R.color.white),
+                    color = colorResource(R.color.text_color_main),
                             fontSize = 20.sp)
                 Button(onClick ={
                     val cartProduct= CartProducts(0,product.name,product.image,product.category,product.price,product.brand,ordered.value,username)
@@ -98,7 +98,7 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
     ) {innerpadding->
         //CONTENT
         Column(modifier = Modifier
-            .background(colorResource(R.color.white))
+            .background(colorResource(R.color.background))
             .padding(innerpadding)
             .fillMaxSize()
             .padding(16.dp)
@@ -128,7 +128,7 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                         Icon(
                             Icons.Filled.MoreHoriz, contentDescription = "Localized description",
                             modifier = Modifier.size(56.dp),
-                            tint = colorResource(R.color.black_1))
+                            tint = colorResource(R.color.text_color_main))
                     }
                 }
             }   //DETAILS
@@ -218,7 +218,7 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                                 strokeWidth = 5f
                             )
                         },
-                        color = colorResource(R.color.black_1),
+                        color = colorResource(R.color.text_color_main),
                         text =  "Detay")
 
 

@@ -64,8 +64,8 @@ fun FavoriteScreen(navController: NavController,favoriteViewModel: FavoriteViewM
                     onDeleteClick = { favProduct->
                         scope.launch {
                             val sb = snackbarHostState.showSnackbar(
-                                message = "Delete the ${favProduct.name} from cart?",
-                                actionLabel = "YES"
+                                message = " ${favProduct.name} favorilerimden silmek istiyormusun?",
+                                actionLabel = "EVET"
                             )
                             if (sb == SnackbarResult.ActionPerformed) {
                                 favoriteViewModel.deleteFavorites(favProduct)

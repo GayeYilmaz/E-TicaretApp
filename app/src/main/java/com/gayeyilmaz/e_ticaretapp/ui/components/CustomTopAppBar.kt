@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ShoppingBasket
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,11 +32,12 @@ fun CustomTopAppBAr(navController: NavController,name:String){
 
     CenterAlignedTopAppBar(
         modifier = Modifier.statusBarsPadding().height(60.dp)
-            .clip(RoundedCornerShape(topStart=0.dp, topEnd = 0.dp, bottomStart = 30.dp, bottomEnd =30.dp)),
+            .clip(RoundedCornerShape(topStart=0.dp, topEnd = 0.dp, bottomStart = 0.dp, bottomEnd =0.dp)),
         title = { Text(text=name) },
+
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = colorResource(id= R.color.main_color),
-            titleContentColor = colorResource(R.color.white)
+            containerColor = colorResource(id= R.color.white),
+            titleContentColor = colorResource(R.color.text_color_main)
         ),
         navigationIcon = {
             IconButton(onClick = {
@@ -45,7 +47,7 @@ fun CustomTopAppBAr(navController: NavController,name:String){
                 /* do something */ }) {
                 Icon(
                     Icons.Filled.Close,
-                    tint = colorResource(R.color.white),
+                    tint = colorResource(R.color.text_color_main),
                     contentDescription = "Localized description"
                 )
             }
@@ -58,7 +60,7 @@ fun CustomTopAppBAr(navController: NavController,name:String){
                     navController.navigate("cartScreen/$cartProductJson") }) {
                     Icon(
                         imageVector = Icons.Filled.ShoppingBasket,
-                        tint = colorResource(R.color.white),
+                        tint = colorResource(R.color.text_color_main),
                         contentDescription = "Localized description"
                     )
                 }
