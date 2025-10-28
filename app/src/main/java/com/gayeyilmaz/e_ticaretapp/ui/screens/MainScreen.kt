@@ -67,33 +67,22 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
     var scrollState = rememberScrollState()
     val searchQuery = remember { mutableStateOf("") }
-    val favList = mainViewModel.favoriteProductsList
     val context = LocalContext.current
+
+    //LOAD PRODUCTS
     val productsList = mainViewModel.productsList.observeAsState(listOf())
-    var categoryList = mutableListOf<String>()
+    //LOAD CATEGORIES
+    var categoriesList = mainViewModel.categoriesList.observeAsState(listOf())
 
-    //CATEHORIES
-    for(product in productsList.value){
-        if(categoryList.isNotEmpty()){
-            if(categoryList.contains(product.category)){
-                Log.e("CATEGORY","listede ${product.category}")
-            }
-            else{
-                categoryList.add(product.category)
-                Log.e("CATEGORY","listede değil  ${product.category}")
-            }
+    //LOAD FAVORITE
+    val favoritiesList = mainViewModel.favoritiesList
 
-        }else{
-            categoryList.add(product.category)
-            Log.e("CATEGORY","${product.category}")
-        }
-
-
-    }
 
 
     LaunchedEffect(true) {
         mainViewModel.loadProducts()
+        mainViewModel.loadCategories()
+        mainViewModel.loadFavorites()
     }
 
     Scaffold(
@@ -300,7 +289,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                 ) {
 
 
-                    items(categoryList){category->
+                    items(categoriesList.value){category->
                         CategoriesCard(category)
                     }
 
@@ -344,18 +333,20 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                                 context=context,
                                 onFavoriteClick ={ favProduct ->
                                     if(favProduct.isFavorite == true){
-                                        Log.e("FAV","${favProduct.name} - Added :${favList} ")
-                                        favList.add(favProduct)
+                                        Log.e("fav-delete","${favProduct.name} - Added :${favoritiesList} ")
+                                        mainViewModel.addFavorites(favProduct)
+                                        //favList.add(favProduct)
                                     }else{
-                                        val index = favList.indexOfFirst {it.id == favProduct.id  }
-                                        favList.removeAt(index)
 
-                                        Log.e("FAV","${product.name} - Deleted :${favList}")
+                                        //val index = favList.indexOfFirst {it.id == favProduct.id  }
+                                        //favList.removeAt(index)
+                                        mainViewModel.deleteFavorites(favProduct)
+                                        Log.e("FAV","MainScreen- ${product.name} - Deleted :${favoritiesList}")
                                     }
 
 
                             } ,
-                                isFavorite=favList.any { it.id == product.id }
+                                isFavorite=favoritiesList.any { it.id == product.id }
 
 
 

@@ -11,6 +11,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,12 +32,18 @@ import kotlinx.coroutines.launch
 @Composable
 fun FavoriteScreen(navController: NavController,favoriteViewModel: FavoriteViewModel){
 
-    val favList = favoriteViewModel.favoriteProductsList
+    val favoritiesList = favoriteViewModel.favoritiesList
+    Log.e("fav-delete","favoite screen opended}")
+    Log.e("fav-delete","load list size - ${favoritiesList.size}")
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
 
+    LaunchedEffect(true) {
+        favoriteViewModel.loadFavorites()
+
+    }
     Scaffold (
         topBar = {
             CustomTopAppBAr(navController,"Favorilerim")
@@ -53,10 +60,10 @@ fun FavoriteScreen(navController: NavController,favoriteViewModel: FavoriteViewM
         LazyColumn(
             modifier = Modifier.padding(innerpadding)
         ) {
-            items(favList.size){
+            items(favoritiesList.size){
                 i ->
                 CustomFavoriteCard(navController,
-                    favList[i],
+                    favoritiesList[i],
                     onDeleteClick = { favProduct->
                         scope.launch {
                             val sb = snackbarHostState.showSnackbar(
@@ -64,7 +71,9 @@ fun FavoriteScreen(navController: NavController,favoriteViewModel: FavoriteViewM
                                 actionLabel = "YES"
                             )
                             if (sb == SnackbarResult.ActionPerformed) {
-                                favList.remove(favProduct)
+                                favoriteViewModel.deleteFavorites(favProduct)
+
+
                             }
                         }
 

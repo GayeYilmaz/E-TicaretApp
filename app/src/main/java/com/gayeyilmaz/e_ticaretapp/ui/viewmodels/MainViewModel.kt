@@ -19,28 +19,58 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(var productRepository : ProductsRepository): ViewModel() {
 
 
-    val favoriteProductsList = productRepository.favoriteProductsList
+    val favoritiesList = productRepository.favoritiesList
     var productsList = MutableLiveData<List<Products>>()
-
+    var categoriesList = MutableLiveData<List<String>>()
 
 
     init{
         loadProducts()
         loadCategories()
+        loadFavorites()
+    }
+    fun loadFavorites(){
+        CoroutineScope(Dispatchers.Main).launch {
+            productRepository.loadFavorites()
+            Log.e("fav-delete","mainview-load - ${favoritiesList}")
+        }
+    }
+
+    fun addFavorites(favoriteProducts: FavoriteProducts){
+        CoroutineScope(Dispatchers.Main).launch {
+            favoritiesList.add(favoriteProducts)
+          // productRepository.add(favoriteProducts)
+            Log.e("fav-delete","mainview-add list - ${favoritiesList}")
+            loadFavorites()
+        }
 
     }
 
+    fun deleteFavorites(favoriteProducts: FavoriteProducts){
+       // Log.e("FAV","MainViewModel- ${favoriteProducts.name} - Deleted :${favoritiesList}")
+        CoroutineScope(Dispatchers.Main).launch {
+            if(favoriteProducts.isFavorite==false){
+                favoriteProducts.isFavorite = true
+                favoritiesList.remove(favoriteProducts)
+            }else{
+                favoritiesList.remove(favoriteProducts)
+            }
+
+            Log.e("fav-delete","mainview-delete list - ${favoritiesList}")
+            loadFavorites()
+        }
+    }
+
+
+
     fun loadCategories(){
         CoroutineScope(Dispatchers.Main).launch {
-           // categoriesList.value=productRepository.loadCategories()
-
+           categoriesList.value=productRepository.loadCategories()
         }
     }
     fun loadProducts(){
         CoroutineScope(Dispatchers.Main).launch {
-
             productsList.value=productRepository.loadProducts()
-
         }
     }
 

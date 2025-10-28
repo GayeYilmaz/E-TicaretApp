@@ -8,6 +8,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
+import com.gayeyilmaz.e_ticaretapp.data.entity.FavoriteProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.gayeyilmaz.e_ticaretapp.retrofit.ProductsDao
 import kotlinx.coroutines.Dispatchers
@@ -16,12 +17,31 @@ import java.lang.Exception
 import kotlin.text.category
 
 class ProductsDatasource (var productsDao: ProductsDao){
-    //LOAD CATEGORIES
 
+
+
+    //LOAD CATEGORIES
     suspend fun loadCategories(): List<String> =withContext(Dispatchers.IO){
-        return@withContext   listOf("Phones", "Computer", "Health", "Books","Headphones")
+        var categoryList = mutableListOf<String>()
+        var productsList = productsDao.loadProducts().urunler
+        if(productsList.size != 0){
+            for(product in productsList){
+                if(categoryList.isNotEmpty()){
+                    if(categoryList.contains(product.category)){
+                    }
+                    else{
+                        categoryList.add(product.category)
+                    }
+
+                }else{
+                    categoryList.add(product.category)
+                }
+            }
+        }
+        return@withContext categoryList
 
     }
+
     //LOAD PRODUCT
     suspend fun loadProducts():List<Products> = withContext(Dispatchers.IO){
         try {
@@ -46,14 +66,8 @@ class ProductsDatasource (var productsDao: ProductsDao){
 
     //ADD TO CART
     suspend fun addCart(cartProduct: CartProducts){
-
-
-
-        Log.e( "CartProduct","Datasource cart product name : ${cartProduct.name}")
-        Log.e( "CartProduct","addCart : ${productsDao.addCart(cartProduct.name,cartProduct.image,cartProduct.category,
-            cartProduct.price,cartProduct.brand,cartProduct.ordered,cartProduct.username).success
-        }")
-
+         productsDao.addCart(cartProduct.name,cartProduct.image,cartProduct.category,
+            cartProduct.price,cartProduct.brand,cartProduct.ordered,cartProduct.username).message
 
 
     }

@@ -12,9 +12,14 @@ import com.gayeyilmaz.e_ticaretapp.data.entity.FavoriteProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 
 class ProductsRepository(var productsDatasource: ProductsDatasource) {
+    var favoritiesList = mutableStateListOf<FavoriteProducts>()
 
-    var favoriteProductsList = mutableStateListOf<FavoriteProducts>()
+    //FAVORITE OPERATIONS
+    suspend fun loadFavorites(): List<FavoriteProducts>{
+       // Log.e("FAV","Repository  Load :${productsDatasource.loadFavorites()} ")
+        return favoritiesList
 
+    }
 
 
     suspend fun loadCategories(): List<String>{
