@@ -1,20 +1,14 @@
 package com.gayeyilmaz.e_ticaretapp.data.datasources
 
-import android.util.Log
-import androidx.compose.ui.platform.LocalContext
-import com.android.volley.Request.Method
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
+
 
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
-import com.gayeyilmaz.e_ticaretapp.data.entity.FavoriteProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.gayeyilmaz.e_ticaretapp.retrofit.ProductsDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception
-import kotlin.text.category
+
 
 class ProductsDatasource (var productsDao: ProductsDao){
 

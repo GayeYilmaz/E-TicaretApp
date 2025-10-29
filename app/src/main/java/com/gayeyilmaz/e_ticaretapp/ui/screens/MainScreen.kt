@@ -1,6 +1,5 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -53,22 +52,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gayeyilmaz.e_ticaretapp.R
 import com.gayeyilmaz.e_ticaretapp.ui.components.CategoriesCard
-import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomAppBar
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomProductCard
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
-
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.runtime.LaunchedEffect
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.NavigationItemData
-
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomNavigationBar
 import com.google.gson.Gson
 
@@ -183,7 +177,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                     }
                 )
 
-           // CustomBottomAppBar(navController)
+
         }
     ){innerpadding ->
         //CONTENT
@@ -378,15 +372,9 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                                 context=context,
                                 onFavoriteClick ={ favProduct ->
                                     if(favProduct.isFavorite == true){
-                                        Log.e("fav-delete","${favProduct.name} - Added :${favoritiesList} ")
                                         mainViewModel.addFavorites(favProduct)
-                                        //favList.add(favProduct)
                                     }else{
-
-                                        //val index = favList.indexOfFirst {it.id == favProduct.id  }
-                                        //favList.removeAt(index)
                                         mainViewModel.deleteFavorites(favProduct)
-                                        Log.e("FAV","MainScreen- ${product.name} - Deleted :${favoritiesList}")
                                     }
                             } ,
                                 isFavorite=favoritiesList.any { it.id == product.id }

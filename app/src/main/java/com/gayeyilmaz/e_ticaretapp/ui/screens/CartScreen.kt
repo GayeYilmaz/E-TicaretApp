@@ -1,8 +1,6 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
-import android.app.admin.TargetUser
-import android.text.LoginFilter
-import android.util.Log
+
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -41,20 +39,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
-import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomAppBar
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomCartCard
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomTopAppBAr
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.CartViewModel
 import kotlinx.coroutines.launch
-
-import com.android.volley.Request
-import com.android.volley.Response
 import com.gayeyilmaz.e_ticaretapp.data.entity.NavigationItemData
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomNavigationBar
 import com.google.gson.Gson
