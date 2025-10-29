@@ -2,8 +2,14 @@ package com.gayeyilmaz.e_ticaretapp.ui.screens
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -20,12 +26,16 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
+import com.gayeyilmaz.e_ticaretapp.data.entity.NavigationItemData
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomAppBar
+import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomNavigationBar
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomFavoriteCard
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomTopAppBAr
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.DetailViewModel
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.FavoriteViewModel
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +56,30 @@ fun FavoriteScreen(navController: NavController,favoriteViewModel: FavoriteViewM
             CustomTopAppBAr(navController,"Favorilerim")
         },
         bottomBar = {
-            CustomBottomAppBar(navController)
+            CustomBottomNavigationBar(
+                modifier = Modifier.fillMaxWidth(),
+                navItems = listOf(
+                    NavigationItemData(Icons.Filled.Home, "Ana Sayfa"),
+                    NavigationItemData(Icons.Filled.Favorite, "Favoriler"),
+                    NavigationItemData(Icons.Filled.Person, "Profil"),
+                    NavigationItemData(Icons.Filled.ShoppingBasket, "Sepet")
+                ),
+                defaultSelectedIndex = 1,
+                itemSelected = { index, reselected ->
+                    if(index == 0)
+                        navController.navigate("mainScreen")
+                    else if(index == 1)
+                        navController.navigate("favoriteScreen")
+                    else if(index == 2)
+                        navController.navigate("cartScreen")
+                    else if(index == 3){
+
+                        val cartProduct = CartProducts(0,"","","",0,"",0,"")
+                        var cartProductJson = Gson().toJson(cartProduct)
+                        navController.navigate("cartScreen/$cartProductJson")}
+
+                }
+            )
         },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)

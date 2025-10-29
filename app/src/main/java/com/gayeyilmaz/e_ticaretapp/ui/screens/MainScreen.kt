@@ -58,8 +58,19 @@ import com.gayeyilmaz.e_ticaretapp.ui.components.CustomProductCard
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.runtime.LaunchedEffect
+import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
+import com.gayeyilmaz.e_ticaretapp.data.entity.NavigationItemData
+
+import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomNavigationBar
+import com.google.gson.Gson
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -146,7 +157,33 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
         },
         //BOTTOM BAR
         bottomBar = {
-            CustomBottomAppBar(navController)
+
+            CustomBottomNavigationBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    navItems = listOf(
+                        NavigationItemData(Icons.Filled.Home, "Ana Sayfa"),
+                        NavigationItemData(Icons.Filled.Favorite, "Favoriler"),
+                        NavigationItemData(Icons.Filled.Person, "Profil"),
+                        NavigationItemData(Icons.Filled.ShoppingBasket, "Sepet")
+                    ),
+                    defaultSelectedIndex = 0,
+                    itemSelected = { index, reselected ->
+                        if(index == 0)
+                            navController.navigate("mainScreen")
+                        else if(index == 1)
+                            navController.navigate("favoriteScreen")
+                        else if(index == 2)
+                           // navController.navigate("cartScreen")
+                        else if(index == 3){
+
+                            val cartProduct = CartProducts(0,"","","",0,"",0,"")
+                            var cartProductJson = Gson().toJson(cartProduct)
+                            navController.navigate("cartScreen/$cartProductJson")}
+
+                    }
+                )
+
+           // CustomBottomAppBar(navController)
         }
     ){innerpadding ->
         //CONTENT

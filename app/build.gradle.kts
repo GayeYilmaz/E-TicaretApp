@@ -55,6 +55,10 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.volley)
     implementation(libs.androidx.games.activity)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.compose.ui.unit)
+    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -83,6 +87,9 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.6.1")
 
     implementation ("com.github.skydoves:landscapist-glide:1.4.4")
+
+    implementation("com.exyte:animated-navigation-bar:1.0.0")
+
 
 
 

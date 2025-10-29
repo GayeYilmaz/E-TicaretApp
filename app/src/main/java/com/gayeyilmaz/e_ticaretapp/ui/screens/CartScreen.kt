@@ -3,6 +3,7 @@ package com.gayeyilmaz.e_ticaretapp.ui.screens
 import android.app.admin.TargetUser
 import android.text.LoginFilter
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -49,6 +55,9 @@ import kotlinx.coroutines.launch
 
 import com.android.volley.Request
 import com.android.volley.Response
+import com.gayeyilmaz.e_ticaretapp.data.entity.NavigationItemData
+import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomNavigationBar
+import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,7 +104,7 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                             )
                         )
                         .background(colorResource(R.color.bottom_bar_background))
-                        .padding(start=16.dp,end=16.dp,top=16.dp)
+                        .padding(16.dp)
                         .fillMaxWidth()
                         .height(100.dp)
 
@@ -133,12 +142,41 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                             .fillMaxWidth()
                             .padding(top = 10.dp),
                         colors = ButtonDefaults.buttonColors(colorResource(R.color.main_color)),
-                        onClick = {}
+                        onClick = {
+                            scope.launch {
+                                Toast.makeText(context, "Sepet Onaylandı!", Toast.LENGTH_SHORT).show()
+
+                            }
+
+                        }
                     ) {
                         Text(text = "Sepeti Onayla")
                     }
                 }
-                CustomBottomAppBar(navController)
+                CustomBottomNavigationBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    navItems = listOf(
+                        NavigationItemData(Icons.Filled.Home, "Ana Sayfa"),
+                        NavigationItemData(Icons.Filled.Favorite, "Favoriler"),
+                        NavigationItemData(Icons.Filled.Person, "Profil"),
+                        NavigationItemData(Icons.Filled.ShoppingBasket, "Sepet")
+                    ),
+                    defaultSelectedIndex = 3,
+                    itemSelected = { index, reselected ->
+                        if(index == 0)
+                            navController.navigate("mainScreen")
+                        else if(index == 1)
+                            navController.navigate("favoriteScreen")
+                        else if(index == 2)
+                            navController.navigate("cartScreen")
+                        else if(index == 3){
+
+                            val cartProduct = CartProducts(0,"","","",0,"",0,"")
+                            var cartProductJson = Gson().toJson(cartProduct)
+                            navController.navigate("cartScreen/$cartProductJson")}
+
+                    }
+                )
             }
         },
         snackbarHost = {
