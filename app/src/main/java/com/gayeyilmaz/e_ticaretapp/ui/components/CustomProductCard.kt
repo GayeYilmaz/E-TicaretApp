@@ -109,7 +109,7 @@ fun CustomProductCard(navController: NavController, product: Products, context: 
 
                     Text(fontSize = 12.sp,
                         text = "Hızlı Teslimat",
-                        color = colorResource(R.color.text_color_main),
+                        color = colorResource(R.color.white),
                     )
                 }
                 Row(

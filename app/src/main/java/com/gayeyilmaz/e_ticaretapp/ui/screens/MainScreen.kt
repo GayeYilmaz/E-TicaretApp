@@ -110,12 +110,12 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                         .offset(y=17.dp)
                         .padding(end = 10.dp)
                         .clip(CircleShape)
-                        .size(36.dp)
+                        .size(40.dp)
                         .background(colorResource(R.color.main_color)),
                 ){
-                    Icon(Icons.Filled.Menu,
+                    Icon(painter = painterResource(R.drawable.tornado),
                         contentDescription = "Localized description",
-                        modifier = Modifier.size(30.dp),
+                        modifier = Modifier.size(34.dp),
                         tint = Color.White)
                 }
 
