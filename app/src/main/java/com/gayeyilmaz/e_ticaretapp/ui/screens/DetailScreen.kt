@@ -1,5 +1,6 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,13 +44,15 @@ import com.gayeyilmaz.e_ticaretapp.R
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomTopAppBAr
+import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.CartViewModel
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.DetailViewModel
 import com.google.gson.Gson
 import com.skydoves.landscapist.glide.GlideImage
+import hilt_aggregated_deps._com_gayeyilmaz_e_ticaretapp_ui_viewmodels_CartViewModel_HiltModules_BindsModule
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen(navController: NavController,product : Products,detailViewModel: DetailViewModel,username:String){
+fun DetailScreen(navController: NavController,product : Products,detailViewModel: DetailViewModel,username:String,cartViewModel: CartViewModel){
 
     var ordered = remember { mutableStateOf(0) }
 
@@ -72,9 +75,15 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                     color = colorResource(R.color.text_color_main),
                             fontSize = 20.sp)
                 Button(onClick ={
-                    val cartProduct= CartProducts(0,product.name,product.image,product.category,product.price,product.brand,ordered.value,username)
-                    var cartProductJson = Gson().toJson(cartProduct)
-                       navController.navigate( "cartScreen/$cartProductJson" )
+                    Log.e("PRODUCT",    "Product to add ${CartProducts(0,product.name,product.image,product.category,product.price,product.brand,ordered.value,username)}")
+                    cartViewModel.addCart(CartProducts(0,product.name,product.image,product.category,product.price,product.brand,ordered.value,username))
+                    // addCart(CartProducts(0,product.name,product.image,product.category,product.price,product.brand,ordered.value,username))
+                    //val cartProduct=CartProducts(0,"","","",0,"",0,"")
+
+
+                    var cartProductJson = Gson().toJson(CartProducts(0,"","","",0,"",0,""))
+                    //var cartProductJson = Gson().toJson(CartProducts(0,product.name,product.image,product.category,product.price,product.brand,ordered.value,username))
+                    navController.navigate( "cartScreen/$cartProductJson" )
                        ordered.value = 0 },
                     modifier = Modifier.width(150.dp).height(50.dp),
                     shape = RoundedCornerShape(10.dp),

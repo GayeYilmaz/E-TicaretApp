@@ -33,7 +33,7 @@ fun AppNavigation(mainViewModel: MainViewModel,detailViewModel: DetailViewModel,
             val jsonProduct = it.arguments?.getString("product")
             val product = Gson().fromJson(jsonProduct, Products::class.java)
             if(product != null){
-                DetailScreen(navController,product = product,detailViewModel=detailViewModel,username=username)
+                DetailScreen(navController,product = product,detailViewModel=detailViewModel,username=username,cartViewModel=cartViewModel)
             }
 
 

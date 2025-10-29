@@ -1,6 +1,7 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -69,8 +70,12 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
 
 
     LaunchedEffect(true) {
-        cartViewModel.addCart(cartProduct)
+        Log.e("PRODUCT",    "LaunchEffect  ${cartProductsList.value}")
+        //cartViewModel.addCart(cartProduct)
         cartViewModel.loadCartProducts(username)
+
+
+
 
     }
 
@@ -207,7 +212,8 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                             }
                         },
                         onUpdateClick ={
-                            cartViewModel.addCart(cartProduct)
+                            Log.e("ordered","unUpdateClick${cartProduct}")
+                            cartViewModel.updateCart(cartProduct)
                         },
                         onCheckClick={ isChecked->
                             if(!isChecked){

@@ -1,6 +1,7 @@
 package com.gayeyilmaz.e_ticaretapp.ui.viewmodels
 
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
@@ -19,12 +20,14 @@ class CartViewModel @Inject constructor(var productRepository : ProductsReposito
 
     init {
         loadCartProducts("gaye_yilmaz")
+        Log.e("PRODUCT",    "init  ${cartProductsList.value}")
     }
 
 
     fun loadCartProducts(username: String) {
         CoroutineScope(Dispatchers.Main).launch {
             cartProductsList.value = productRepository.loadCartProducts(username)
+            Log.e("PRODUCT",    "loadCartProducts  ${cartProductsList.value}")
         }
     }
 
@@ -36,9 +39,7 @@ class CartViewModel @Inject constructor(var productRepository : ProductsReposito
         }
     }
 
-
-
-    fun addCart(cartProduct: CartProducts) {
+    fun updateCart(cartProduct: CartProducts){
         CoroutineScope(Dispatchers.Main).launch {
             var InCart=false
             var newCartProduct = CartProducts(0,"","","",0,"",0,cartProduct.username)
@@ -46,13 +47,12 @@ class CartViewModel @Inject constructor(var productRepository : ProductsReposito
                 if(cartProductsList.value.size != 0){
                     for(cartProductsItem in cartProductsList.value){
                         if((cartProductsItem.name == cartProduct.name) ){
-                            var newordered = cartProductsItem.ordered + cartProduct.ordered
                             newCartProduct.name=cartProductsItem.name
                             newCartProduct.image=cartProductsItem.image
                             newCartProduct.category=cartProductsItem.category
                             newCartProduct.price=cartProductsItem.price
                             newCartProduct.brand=cartProductsItem.brand
-                            newCartProduct.ordered=newordered
+                            newCartProduct.ordered= cartProduct.ordered
                             delete(cartProductsItem.cartId,cartProductsItem.username)
                             productRepository.addCart(newCartProduct)
                             loadCartProducts(cartProduct.username)
@@ -68,6 +68,49 @@ class CartViewModel @Inject constructor(var productRepository : ProductsReposito
                 }
 
             }
+        }
+    }
+
+
+
+
+    fun addCart(cartProduct: CartProducts) {
+        Log.e("PRODUCT",    "addcart function  ${cartProduct}")
+        CoroutineScope(Dispatchers.Main).launch {
+            var InCart=false
+            var newCartProduct = CartProducts(0,"","","",0,"",0,cartProduct.username)
+
+                if(cartProductsList.value.size != 0){
+                    for(cartProductsItem in cartProductsList.value){
+                        if((cartProductsItem.name == cartProduct.name) ){
+                            var newordered = cartProductsItem.ordered + cartProduct.ordered
+                            newCartProduct.name=cartProductsItem.name
+                            newCartProduct.image=cartProductsItem.image
+                            newCartProduct.category=cartProductsItem.category
+                            newCartProduct.price=cartProductsItem.price
+                            newCartProduct.brand=cartProductsItem.brand
+                            newCartProduct.ordered=newordered
+                            delete(cartProductsItem.cartId,cartProductsItem.username)
+                            productRepository.addCart(newCartProduct)
+                            loadCartProducts(cartProduct.username)
+                            InCart=true
+                            Log.e("PRODUCT",    "added product  in list   ${newCartProduct}")
+                        }
+                    }
+                    if(InCart == false){
+                        productRepository.addCart(cartProduct)
+                        loadCartProducts(cartProduct.username)
+                        Log.e("PRODUCT",    "added product not in list   ${cartProduct}")
+                    }
+                }else{
+
+                    productRepository.addCart(cartProduct)
+                    loadCartProducts(cartProduct.username)
+                    Log.e("PRODUCT",    "added product emmpty list   ${cartProduct}")
+                }
+
+
+            loadCartProducts(cartProduct.username)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.gayeyilmaz.e_ticaretapp.ui.components
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -44,7 +45,9 @@ import kotlin.Unit
 
 @Composable
 fun CustomCartCard(cartProduct: CartProducts, context: Context,onDeleteClick:(Int) -> Unit,onUpdateClick:(cartProduct:CartProducts) -> Unit ,onCheckClick:(isChecked:Boolean) -> Unit  ){
-    var ordered = remember { mutableStateOf(cartProduct.ordered) }
+
+    var ordered = remember { mutableStateOf(0) }
+    ordered.value=cartProduct.ordered
     var price = 0
     var totalPrice = 0
     var isChecked = remember { mutableStateOf(true) }
@@ -151,6 +154,17 @@ fun CustomCartCard(cartProduct: CartProducts, context: Context,onDeleteClick:(In
                         horizontalArrangement = Arrangement.SpaceAround
                     ){
                         IconButton(onClick = {
+                            ordered.value = ordered.value-1
+                            if(ordered.value == 0){
+                                onDeleteClick(cartProduct.cartId)
+
+                            }else{
+                                Log.e("ordered","${ordered.value}")
+                                cartProduct.ordered = ordered.value
+                                Log.e("ordered","unUpdateClick${ordered.value}")
+                                onUpdateClick(cartProduct)
+
+                            }
                            /** if(ordered.value!=0){
                                 ordered.value = ordered.value-1
                                 cartProduct.ordered = ordered.value
@@ -170,12 +184,12 @@ fun CustomCartCard(cartProduct: CartProducts, context: Context,onDeleteClick:(In
 
                                 )
                         }
-                        Text(text = "${cartProduct.ordered}")
+                        Text(text = "${ordered.value}")
 
                         IconButton(onClick = {
-                            /**ordered.value = ordered.value+1
+                            ordered.value =ordered.value+1
                             cartProduct.ordered = ordered.value
-                            onUpdateClick(cartProduct)**/
+                            onUpdateClick(cartProduct)
 
                         }) {
                             Icon(
