@@ -1,6 +1,7 @@
 package com.gayeyilmaz.e_ticaretapp.ui.components
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -43,8 +45,8 @@ import com.google.gson.Gson
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun ProductCard(navController: NavController, productsList: List<Products>, context: Context, onFavoriteClick: (favoriteProduct: FavoriteProducts) -> Unit,  isFavorite: Boolean){
-    var isFavorite = remember { mutableStateOf(isFavorite) }
+fun ProductCard(navController: NavController, productsList: List<Products>, context: Context, onFavoriteClick: (favoriteProduct: FavoriteProducts) -> Unit,  favoritiesList: List<FavoriteProducts>){
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = 2),
         modifier = Modifier
@@ -55,10 +57,16 @@ fun ProductCard(navController: NavController, productsList: List<Products>, cont
     ) {
         productsList.forEach { product ->
         item{
+
+
+            val isFavoritePro = favoritiesList.any { it.id == product.id }
+            var isFavorite = remember { mutableStateOf(isFavoritePro) }
+            Log.e("FAVORİTES", "Favorite ${isFavorite.value}")
                 Card(
                     elevation = CardDefaults.cardElevation(8.dp),
                     modifier = Modifier
                         .fillMaxWidth()
+
                     ,
                     colors= CardDefaults.cardColors(
                         containerColor = colorResource(R.color.card_container_background)
@@ -72,8 +80,28 @@ fun ProductCard(navController: NavController, productsList: List<Products>, cont
                     ) {
                         IconButton(
                             onClick = {
+                                Log.e("FAVORİTES", "${product.name}")
+                                Log.e("FAVORİTES", "Clicked Favorite ${isFavorite.value}")
                                 isFavorite.value = !isFavorite.value
-                                onFavoriteClick(FavoriteProducts(product.id,product.name,product.image,product.category,product.price,product.brand,isFavorite.value))
+                                Log.e("FAVORİTES", "After Clicked Favorite ${isFavorite.value}")
+                                val favProduct = favoritiesList.find { it.id == product.id }
+                                if(favProduct == null){
+                                    val favProduct = FavoriteProducts(product.id,product.name,product.image,product.category,product.price,product.brand,isFavorite.value)
+                                    onFavoriteClick(favProduct)
+                                }
+                                else{
+                                    favProduct.isFavorite = isFavorite.value
+                                    onFavoriteClick(favProduct)
+                                }
+
+                                Log.e("FAVORİTES", "After Clicked Favorite ${isFavorite.value}")
+                                if(favoritiesList.size == 0){
+
+                                }
+
+
+
+
                             },
                             modifier = Modifier.align(Alignment.End)
                         ) {

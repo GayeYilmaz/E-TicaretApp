@@ -415,23 +415,26 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                                 }else{
                                     mainViewModel.deleteFavorites(favProduct)
                                 }
-                            } ,
-                            isFavorite=false//favoritiesList.any { it.id == product.id }
+                            },
+                            favoritiesList=favoritiesList,
+
                         )
                 }
                 else{
                     filteredProducts = filterCategory(productsList.value,category.value)
-                        ProductCard(navController=navController,
+                    ProductCard(navController=navController,
                             productsList=filteredProducts,
                             context=context,
                             onFavoriteClick ={ favProduct ->
                                 if(favProduct.isFavorite == true){
+                                    Log.e("FAVORİTES", "onFavoriteClick add: ${favProduct.isFavorite}")
                                     mainViewModel.addFavorites(favProduct)
                                 }else{
+                                    Log.e("FAVORİTES", "onFavoriteClick delete: ${favProduct.isFavorite}")
                                     mainViewModel.deleteFavorites(favProduct)
                                 }
                             } ,
-                            isFavorite=false//favoritiesList.any { it.id == product.id }
+                        favoritiesList=favoritiesList,
                         )
 
 
