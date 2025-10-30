@@ -63,10 +63,7 @@ fun FavoriteScreen(navController: NavController,favoriteViewModel: FavoriteViewM
                     else if(index == 2)
                         navController.navigate("cartScreen")
                     else if(index == 3){
-
-                        val cartProduct = CartProducts(0,"","","",0,"",0,"")
-                        var cartProductJson = Gson().toJson(cartProduct)
-                        navController.navigate("cartScreen/$cartProductJson")}
+                        navController.navigate("cartScreen")}
 
                 }
             )

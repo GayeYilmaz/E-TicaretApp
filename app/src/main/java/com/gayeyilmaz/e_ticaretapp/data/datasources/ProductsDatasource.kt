@@ -18,6 +18,7 @@ class ProductsDatasource (var productsDao: ProductsDao){
     suspend fun loadCategories(): List<String> =withContext(Dispatchers.IO){
         var categoryList = mutableListOf<String>()
         var productsList = productsDao.loadProducts().urunler
+
         if(productsList.size != 0){
             for(product in productsList){
                 if(categoryList.isNotEmpty()){
@@ -28,6 +29,7 @@ class ProductsDatasource (var productsDao: ProductsDao){
                     }
 
                 }else{
+                    categoryList.add("Tümü")
                     categoryList.add(product.category)
                 }
             }

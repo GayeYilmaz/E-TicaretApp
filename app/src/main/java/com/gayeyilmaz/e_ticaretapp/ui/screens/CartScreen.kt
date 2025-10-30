@@ -53,7 +53,7 @@ import com.google.gson.Gson
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartScreen(navController: NavController,cartViewModel: CartViewModel,username:String,cartProduct: CartProducts){
+fun CartScreen(navController: NavController,cartViewModel: CartViewModel,username:String){
 
 
     val cartProductsList = cartViewModel.cartProductsList.observeAsState(listOf())
@@ -70,12 +70,7 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
 
 
     LaunchedEffect(true) {
-        Log.e("PRODUCT",    "LaunchEffect  ${cartProductsList.value}")
-        //cartViewModel.addCart(cartProduct)
         cartViewModel.loadCartProducts(username)
-
-
-
 
     }
 

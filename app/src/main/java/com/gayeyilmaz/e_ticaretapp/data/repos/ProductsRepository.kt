@@ -11,7 +11,7 @@ class ProductsRepository(var productsDatasource: ProductsDatasource) {
 
     //FAVORITE OPERATIONS
     suspend fun loadFavorites(): List<FavoriteProducts>{
-       // Log.e("FAV","Repository  Load :${productsDatasource.loadFavorites()} ")
+
         return favoritiesList
 
     }

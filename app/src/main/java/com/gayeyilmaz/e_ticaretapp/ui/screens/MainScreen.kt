@@ -1,5 +1,6 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -61,9 +62,14 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.NavigationItemData
+import com.gayeyilmaz.e_ticaretapp.data.entity.Products
+import com.gayeyilmaz.e_ticaretapp.ui.components.CategoriesCardX
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomNavigationBar
+import com.gayeyilmaz.e_ticaretapp.ui.components.ProductCard
 import com.google.gson.Gson
 
 
@@ -73,6 +79,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
     var scrollState = rememberScrollState()
     val searchQuery = remember { mutableStateOf("") }
+    val category = remember { mutableStateOf("Tümü") }
     val context = LocalContext.current
 
     //LOAD PRODUCTS
@@ -82,6 +89,21 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
     //LOAD FAVORITE
     val favoritiesList = mainViewModel.favoritiesList
+
+    var filteredProducts = remember { mutableStateListOf<Products>() }
+
+    fun filterCategory( products: List<Products>,category:String ) : SnapshotStateList<Products> {
+        return mutableStateListOf<Products>().apply {
+            addAll(products.filter { it.category == category })
+        }
+      /**  productsList.value.forEach { product ->
+            if (product.category == category) {
+                filteredProdcuts.add(product)
+            }
+
+        }
+        return filteredProdcuts**/
+    }
 
 
 
@@ -169,10 +191,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                         else if(index == 2)
                            // navController.navigate("cartScreen")
                         else if(index == 3){
-
-                            val cartProduct = CartProducts(0,"","","",0,"",0,"")
-                            var cartProductJson = Gson().toJson(cartProduct)
-                            navController.navigate("cartScreen/$cartProductJson")}
+                            navController.navigate("cartScreen")}
 
                     }
                 )
@@ -324,14 +343,39 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                 Spacer(modifier = Modifier.height(20.dp))
 
                //CATEGORIES ROW
-                LazyRow(
+            val categoriesListNew = categoriesList.value
+            CategoriesCardX(categoriesListNew,
+                itemSelected = { index, reselected ->
+                    if(index == 0)
+                       category.value="Tümü"
+                    else if(index == 1)
+                        category.value="Teknoloji"
+                    else if(index == 2)
+                        category.value="Aksesuar"
+                    else if(index == 2)
+                        category.value="Kozmetik"
+                    else{
+                        category.value="Tümü"
+                    }
+
+
+
+
+
+                }
+                ,0)
+               /** LazyRow(
                     modifier = Modifier.fillMaxWidth()
                 )
                 {
                     items(categoriesList.value){category->
-                        CategoriesCard(category)
+                        CategoriesCard(category,
+                            selectedCategory={
+
+                            }
+                            )
                     }
-                }
+                }**/
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Row(
@@ -355,8 +399,87 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
+
+
+            if(!(productsList.value==null)){
+                Log.e("CATEGORY","${category.value}")
+                if(category.value == "Tümü" ){
+                    Log.e("CATEGORY","${productsList.value.size}")
+
+                        ProductCard(navController=navController,
+                            productsList=productsList.value,
+                            context=context,
+                            onFavoriteClick ={ favProduct ->
+                                if(favProduct.isFavorite == true){
+                                    mainViewModel.addFavorites(favProduct)
+                                }else{
+                                    mainViewModel.deleteFavorites(favProduct)
+                                }
+                            } ,
+                            isFavorite=false//favoritiesList.any { it.id == product.id }
+                        )
+                }
+                else{
+                    filteredProducts = filterCategory(productsList.value,category.value)
+                        ProductCard(navController=navController,
+                            productsList=filteredProducts,
+                            context=context,
+                            onFavoriteClick ={ favProduct ->
+                                if(favProduct.isFavorite == true){
+                                    mainViewModel.addFavorites(favProduct)
+                                }else{
+                                    mainViewModel.deleteFavorites(favProduct)
+                                }
+                            } ,
+                            isFavorite=false//favoritiesList.any { it.id == product.id }
+                        )
+
+
+                }
+               /** productsList.value.forEach { product ->
+                    Log.e("CATEGORY","${category.value}")
+                    if(category.value == "Tümü" ){
+
+                        ProductCard(navController=navController,
+                            product=product,
+                            context=context,
+                            onFavoriteClick ={ favProduct ->
+                                if(favProduct.isFavorite == true){
+                                    mainViewModel.addFavorites(favProduct)
+                                }else{
+                                    mainViewModel.deleteFavorites(favProduct)
+                                }
+                            } ,
+                            isFavorite=favoritiesList.any { it.id == product.id }
+                        )
+                    }
+                    else{
+                        if(category.value == product.category){
+                            ProductCard(navController=navController,
+                                product=product,
+                                context=context,
+                                onFavoriteClick ={ favProduct ->
+                                    if(favProduct.isFavorite == true){
+                                        mainViewModel.addFavorites(favProduct)
+                                    }else{
+                                        mainViewModel.deleteFavorites(favProduct)
+                                    }
+                                } ,
+                                isFavorite=favoritiesList.any { it.id == product.id }
+                            )
+                        }
+                    }**/
+
+                }
+            }
+
+
+
+
+
+
                 //PRODUCT CARD
-                LazyVerticalGrid(
+               /** LazyVerticalGrid(
                     columns = GridCells.Fixed(count = 2),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -367,18 +490,37 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                     //PRODUCT CARD
                     if(!(productsList.value==null)){
                         items(productsList.value) { product ->
-                            CustomProductCard(navController=navController,
-                                product=product,
-                                context=context,
-                                onFavoriteClick ={ favProduct ->
-                                    if(favProduct.isFavorite == true){
-                                        mainViewModel.addFavorites(favProduct)
-                                    }else{
-                                        mainViewModel.deleteFavorites(favProduct)
-                                    }
-                            } ,
-                                isFavorite=favoritiesList.any { it.id == product.id }
-                            )
+                            if(category.value == "Tümü" ){
+                                CustomProductCard(navController=navController,
+                                    product=product,
+                                    context=context,
+                                    onFavoriteClick ={ favProduct ->
+                                        if(favProduct.isFavorite == true){
+                                            mainViewModel.addFavorites(favProduct)
+                                        }else{
+                                            mainViewModel.deleteFavorites(favProduct)
+                                        }
+                                    } ,
+                                    isFavorite=favoritiesList.any { it.id == product.id }
+                                )
+                            }
+                            else{
+                                if(category.value == product.category){
+                                    CustomProductCard(navController=navController,
+                                        product=product,
+                                        context=context,
+                                        onFavoriteClick ={ favProduct ->
+                                            if(favProduct.isFavorite == true){
+                                                mainViewModel.addFavorites(favProduct)
+                                            }else{
+                                                mainViewModel.deleteFavorites(favProduct)
+                                            }
+                                        } ,
+                                        isFavorite=favoritiesList.any { it.id == product.id }
+                                    )
+                                }
+                            }
+
                         }
                     }
 
@@ -390,7 +532,6 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
 
 
-                }
+                }**/
         }
     }
-}

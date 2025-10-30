@@ -40,9 +40,9 @@ fun AppNavigation(mainViewModel: MainViewModel,detailViewModel: DetailViewModel,
         }
 
 
-        composable("cartScreen/{cartProduct}",
+        composable("cartScreen"){
 
-            arguments= listOf(
+          /**  arguments= listOf(
                 navArgument("cartProduct"){
                     type = NavType.StringType
                 })) {
@@ -50,7 +50,8 @@ fun AppNavigation(mainViewModel: MainViewModel,detailViewModel: DetailViewModel,
                 val cartProduct = Gson().fromJson(jsonCartProduct, CartProducts::class.java)
             if(cartProduct !=null){
                 CartScreen(navController,cartViewModel=cartViewModel,username=username,cartProduct=cartProduct)
-            }
+            }**/
+            CartScreen(navController,cartViewModel=cartViewModel,username=username)
 
         }
 

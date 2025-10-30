@@ -75,15 +75,8 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                     color = colorResource(R.color.text_color_main),
                             fontSize = 20.sp)
                 Button(onClick ={
-                    Log.e("PRODUCT",    "Product to add ${CartProducts(0,product.name,product.image,product.category,product.price,product.brand,ordered.value,username)}")
                     cartViewModel.addCart(CartProducts(0,product.name,product.image,product.category,product.price,product.brand,ordered.value,username))
-                    // addCart(CartProducts(0,product.name,product.image,product.category,product.price,product.brand,ordered.value,username))
-                    //val cartProduct=CartProducts(0,"","","",0,"",0,"")
-
-
-                    var cartProductJson = Gson().toJson(CartProducts(0,"","","",0,"",0,""))
-                    //var cartProductJson = Gson().toJson(CartProducts(0,product.name,product.image,product.category,product.price,product.brand,ordered.value,username))
-                    navController.navigate( "cartScreen/$cartProductJson" )
+                    navController.navigate( "cartScreen" )
                        ordered.value = 0 },
                     modifier = Modifier.width(150.dp).height(50.dp),
                     shape = RoundedCornerShape(10.dp),
