@@ -112,7 +112,8 @@ fun ProductCard(navController: NavController, productsList: List<Products>, cont
                                 .fillMaxSize()
                                 .clickable {
                                     val productJson = Gson().toJson(product)
-                                    navController.navigate("detailScreen/$productJson")
+                                    val isFavoriteValue =  Gson().toJson(isFavorite.value)
+                                    navController.navigate("detailScreen/$productJson/${isFavoriteValue}")
 
                                 }
                                 .padding(10.dp),

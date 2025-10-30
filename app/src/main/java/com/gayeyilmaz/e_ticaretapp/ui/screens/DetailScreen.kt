@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddBox
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.IndeterminateCheckBox
 import androidx.compose.material.icons.filled.MoreHoriz
@@ -23,6 +24,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter.Companion.tint
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,7 +53,7 @@ import com.skydoves.landscapist.glide.GlideImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen(navController: NavController,product : Products,detailViewModel: DetailViewModel,username:String,cartViewModel: CartViewModel){
+fun DetailScreen(navController: NavController,product : Products,isFavorite:Boolean,detailViewModel: DetailViewModel,username:String,cartViewModel: CartViewModel){
 
     var ordered = remember { mutableStateOf(0) }
 
@@ -107,7 +110,11 @@ fun DetailScreen(navController: NavController,product : Products,detailViewModel
                 IconButton(onClick = { /* do something */ },
                     modifier = Modifier.padding(start =310.dp)
                 ) {
-                    Icon(Icons.Filled.FavoriteBorder, contentDescription = "Localized description")
+                    Icon( if(isFavorite){ Icons.Filled.Favorite}else{Icons.Filled.FavoriteBorder},
+                        contentDescription = "Localized description",
+                        tint = if (isFavorite) colorResource(R.color.hearth_color) else MaterialTheme.colorScheme.onSurface)
+
+
                 }
                 Column(
                     modifier = Modifier.fillMaxWidth(),

@@ -198,7 +198,7 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                         onDeleteClick = {
                             scope.launch {
                                 val sb = snackbarHostState.showSnackbar(
-                                    message = " ${cartProduct.name} sepetten kaldırmak istiyormusun?",
+                                    message = " ${cartProduct.name} ürününü sepetten kaldırmak istiyormusun?",
                                     actionLabel = "EVET"
                                 )
                                 if (sb == SnackbarResult.ActionPerformed) {

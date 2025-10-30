@@ -159,9 +159,7 @@ fun CustomCartCard(cartProduct: CartProducts, context: Context,onDeleteClick:(In
                                 onDeleteClick(cartProduct.cartId)
 
                             }else{
-                                Log.e("ordered","${ordered.value}")
                                 cartProduct.ordered = ordered.value
-                                Log.e("ordered","unUpdateClick${ordered.value}")
                                 onUpdateClick(cartProduct)
 
                             }

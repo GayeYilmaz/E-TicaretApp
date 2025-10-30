@@ -22,16 +22,22 @@ fun AppNavigation(mainViewModel: MainViewModel,detailViewModel: DetailViewModel,
             MainScreen(navController,mainViewModel=mainViewModel)
         }
 
-        composable("detailScreen/{product}",
+        composable("detailScreen/{product}/{isFavorite}",
             arguments = listOf(
                 navArgument("product"){
                     type = NavType.StringType
                 }
+                ,
+                navArgument("isFavorite"){
+                    type = NavType.StringType
+                }
             )){
+            val jsonIsFavorite = it.arguments?.getString("isFavorite")
             val jsonProduct = it.arguments?.getString("product")
             val product = Gson().fromJson(jsonProduct, Products::class.java)
+            val isFavorite = Gson().fromJson(jsonIsFavorite, Boolean::class.java)
             if(product != null){
-                DetailScreen(navController,product = product,detailViewModel=detailViewModel,username=username,cartViewModel=cartViewModel)
+                DetailScreen(navController,product = product,isFavorite=isFavorite,detailViewModel=detailViewModel,username=username,cartViewModel=cartViewModel)
             }
         }
 
