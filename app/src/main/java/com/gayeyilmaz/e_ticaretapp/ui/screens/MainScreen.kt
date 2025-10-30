@@ -1,6 +1,5 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,9 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -53,10 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gayeyilmaz.e_ticaretapp.R
 import com.gayeyilmaz.e_ticaretapp.ui.components.CategoriesCard
-import com.gayeyilmaz.e_ticaretapp.ui.components.CustomProductCard
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.MainViewModel
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -64,13 +57,10 @@ import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.NavigationItemData
 import com.gayeyilmaz.e_ticaretapp.data.entity.Products
-import com.gayeyilmaz.e_ticaretapp.ui.components.CategoriesCardX
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomNavigationBar
 import com.gayeyilmaz.e_ticaretapp.ui.components.ProductCard
-import com.google.gson.Gson
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -96,13 +86,6 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
         return mutableStateListOf<Products>().apply {
             addAll(products.filter { it.category == category })
         }
-      /**  productsList.value.forEach { product ->
-            if (product.category == category) {
-                filteredProdcuts.add(product)
-            }
-
-        }
-        return filteredProdcuts**/
     }
 
 
@@ -344,7 +327,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
                //CATEGORIES ROW
             val categoriesListNew = categoriesList.value
-            CategoriesCardX(categoriesListNew,
+            CategoriesCard(categoriesListNew,
                 itemSelected = { index, reselected ->
                     if(index == 0)
                        category.value="Tümü"
@@ -364,18 +347,6 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
                 }
                 ,0)
-               /** LazyRow(
-                    modifier = Modifier.fillMaxWidth()
-                )
-                {
-                    items(categoriesList.value){category->
-                        CategoriesCard(category,
-                            selectedCategory={
-
-                            }
-                            )
-                    }
-                }**/
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Row(
@@ -402,9 +373,7 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
 
             if(!(productsList.value==null)){
-                Log.e("CATEGORY","${category.value}")
                 if(category.value == "Tümü" ){
-                    Log.e("CATEGORY","${productsList.value.size}")
 
                         ProductCard(navController=navController,
                             productsList=productsList.value,
@@ -427,10 +396,8 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
                             context=context,
                             onFavoriteClick ={ favProduct ->
                                 if(favProduct.isFavorite == true){
-                                    Log.e("FAVORİTES", "onFavoriteClick add: ${favProduct.isFavorite}")
                                     mainViewModel.addFavorites(favProduct)
                                 }else{
-                                    Log.e("FAVORİTES", "onFavoriteClick delete: ${favProduct.isFavorite}")
                                     mainViewModel.deleteFavorites(favProduct)
                                 }
                             } ,
@@ -439,102 +406,10 @@ fun MainScreen(navController: NavController,mainViewModel: MainViewModel){
 
 
                 }
-               /** productsList.value.forEach { product ->
-                    Log.e("CATEGORY","${category.value}")
-                    if(category.value == "Tümü" ){
 
-                        ProductCard(navController=navController,
-                            product=product,
-                            context=context,
-                            onFavoriteClick ={ favProduct ->
-                                if(favProduct.isFavorite == true){
-                                    mainViewModel.addFavorites(favProduct)
-                                }else{
-                                    mainViewModel.deleteFavorites(favProduct)
-                                }
-                            } ,
-                            isFavorite=favoritiesList.any { it.id == product.id }
-                        )
-                    }
-                    else{
-                        if(category.value == product.category){
-                            ProductCard(navController=navController,
-                                product=product,
-                                context=context,
-                                onFavoriteClick ={ favProduct ->
-                                    if(favProduct.isFavorite == true){
-                                        mainViewModel.addFavorites(favProduct)
-                                    }else{
-                                        mainViewModel.deleteFavorites(favProduct)
-                                    }
-                                } ,
-                                isFavorite=favoritiesList.any { it.id == product.id }
-                            )
-                        }
-                    }**/
 
                 }
             }
 
-
-
-
-
-
-                //PRODUCT CARD
-               /** LazyVerticalGrid(
-                    columns = GridCells.Fixed(count = 2),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(500.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    //PRODUCT CARD
-                    if(!(productsList.value==null)){
-                        items(productsList.value) { product ->
-                            if(category.value == "Tümü" ){
-                                CustomProductCard(navController=navController,
-                                    product=product,
-                                    context=context,
-                                    onFavoriteClick ={ favProduct ->
-                                        if(favProduct.isFavorite == true){
-                                            mainViewModel.addFavorites(favProduct)
-                                        }else{
-                                            mainViewModel.deleteFavorites(favProduct)
-                                        }
-                                    } ,
-                                    isFavorite=favoritiesList.any { it.id == product.id }
-                                )
-                            }
-                            else{
-                                if(category.value == product.category){
-                                    CustomProductCard(navController=navController,
-                                        product=product,
-                                        context=context,
-                                        onFavoriteClick ={ favProduct ->
-                                            if(favProduct.isFavorite == true){
-                                                mainViewModel.addFavorites(favProduct)
-                                            }else{
-                                                mainViewModel.deleteFavorites(favProduct)
-                                            }
-                                        } ,
-                                        isFavorite=favoritiesList.any { it.id == product.id }
-                                    )
-                                }
-                            }
-
-                        }
-                    }
-
-
-
-
-
-
-
-
-
-                }**/
         }
     }

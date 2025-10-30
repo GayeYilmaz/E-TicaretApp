@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gayeyilmaz.e_ticaretapp.R
 import com.gayeyilmaz.e_ticaretapp.data.entity.NavigationItemData
-//import com.tanishranjan.jetpack_compose_components.composables.bottom_navbar.data.NavigationItemData
+
 
 @Composable
 fun CustomBottomNavigationBar(

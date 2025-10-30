@@ -1,6 +1,6 @@
 package com.gayeyilmaz.e_ticaretapp.data.entity
 
-import com.google.gson.annotations.SerializedName
+
 
 data class FavoriteProducts ( var id:Int,
                               var name:String,

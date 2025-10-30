@@ -43,9 +43,7 @@ interface ProductsDao {
                         @Field("kullaniciAdi") kullaniciAdi:String): CRUDResponse
      //http://kasimadalan.pe.hu/urunler/tumUrunleriGetir.php
 
-    /** @POST("/urunler/tumUrunleriGetir.php")
-    @FormUrlEncoded
-    suspend fun  search(@Field("sepedId") id:Int): CRUDResponse **/
+
 
 
 

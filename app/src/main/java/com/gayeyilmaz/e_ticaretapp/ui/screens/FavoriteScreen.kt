@@ -19,13 +19,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.gayeyilmaz.e_ticaretapp.data.entity.CartProducts
 import com.gayeyilmaz.e_ticaretapp.data.entity.NavigationItemData
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomBottomNavigationBar
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomFavoriteCard
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomTopAppBAr
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.FavoriteViewModel
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

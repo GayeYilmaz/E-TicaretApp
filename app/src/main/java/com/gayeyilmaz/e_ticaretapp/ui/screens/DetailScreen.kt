@@ -1,6 +1,5 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,9 +45,8 @@ import com.gayeyilmaz.e_ticaretapp.data.entity.Products
 import com.gayeyilmaz.e_ticaretapp.ui.components.CustomTopAppBAr
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.CartViewModel
 import com.gayeyilmaz.e_ticaretapp.ui.viewmodels.DetailViewModel
-import com.google.gson.Gson
 import com.skydoves.landscapist.glide.GlideImage
-import hilt_aggregated_deps._com_gayeyilmaz_e_ticaretapp_ui_viewmodels_CartViewModel_HiltModules_BindsModule
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

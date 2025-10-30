@@ -1,7 +1,7 @@
 package com.gayeyilmaz.e_ticaretapp.ui.screens
 
 
-import android.util.Log
+
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -207,7 +207,6 @@ fun CartScreen(navController: NavController,cartViewModel: CartViewModel,usernam
                             }
                         },
                         onUpdateClick ={
-                            Log.e("ordered","unUpdateClick${cartProduct}")
                             cartViewModel.updateCart(cartProduct)
                         },
                         onCheckClick={ isChecked->

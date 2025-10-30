@@ -1,7 +1,6 @@
 package com.gayeyilmaz.e_ticaretapp.ui.components
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -30,7 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -61,7 +58,6 @@ fun ProductCard(navController: NavController, productsList: List<Products>, cont
 
             val isFavoritePro = favoritiesList.any { it.id == product.id }
             var isFavorite = remember { mutableStateOf(isFavoritePro) }
-            Log.e("FAVORİTES", "Favorite ${isFavorite.value}")
                 Card(
                     elevation = CardDefaults.cardElevation(8.dp),
                     modifier = Modifier
@@ -80,10 +76,7 @@ fun ProductCard(navController: NavController, productsList: List<Products>, cont
                     ) {
                         IconButton(
                             onClick = {
-                                Log.e("FAVORİTES", "${product.name}")
-                                Log.e("FAVORİTES", "Clicked Favorite ${isFavorite.value}")
                                 isFavorite.value = !isFavorite.value
-                                Log.e("FAVORİTES", "After Clicked Favorite ${isFavorite.value}")
                                 val favProduct = favoritiesList.find { it.id == product.id }
                                 if(favProduct == null){
                                     val favProduct = FavoriteProducts(product.id,product.name,product.image,product.category,product.price,product.brand,isFavorite.value)
@@ -94,7 +87,6 @@ fun ProductCard(navController: NavController, productsList: List<Products>, cont
                                     onFavoriteClick(favProduct)
                                 }
 
-                                Log.e("FAVORİTES", "After Clicked Favorite ${isFavorite.value}")
                                 if(favoritiesList.size == 0){
 
                                 }
@@ -185,56 +177,6 @@ fun ProductCard(navController: NavController, productsList: List<Products>, cont
 
 
         }
-
-
-
-
-
-
-        //PRODUCT CARD
-        /**if(!(productsList.value==null)){
-            items(productsList.value) { product ->
-                if(category.value == "Tümü" ){
-                    CustomProductCard(navController=navController,
-                        product=product,
-                        context=context,
-                        onFavoriteClick ={ favProduct ->
-                            if(favProduct.isFavorite == true){
-                                mainViewModel.addFavorites(favProduct)
-                            }else{
-                                mainViewModel.deleteFavorites(favProduct)
-                            }
-                        } ,
-                        isFavorite=favoritiesList.any { it.id == product.id }
-                    )
-                }
-                else{
-                    if(category.value == product.category){
-                        CustomProductCard(navController=navController,
-                            product=product,
-                            context=context,
-                            onFavoriteClick ={ favProduct ->
-                                if(favProduct.isFavorite == true){
-                                    mainViewModel.addFavorites(favProduct)
-                                }else{
-                                    mainViewModel.deleteFavorites(favProduct)
-                                }
-                            } ,
-                            isFavorite=favoritiesList.any { it.id == product.id }
-                        )
-                    }
-                }
-
-            }
-        }**/
-
-
-
-
-
-
-
-
 
     }
 }

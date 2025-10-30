@@ -165,17 +165,7 @@ fun CustomCartCard(cartProduct: CartProducts, context: Context,onDeleteClick:(In
                                 onUpdateClick(cartProduct)
 
                             }
-                           /** if(ordered.value!=0){
-                                ordered.value = ordered.value-1
-                                cartProduct.ordered = ordered.value
-                                onUpdateClick(cartProduct)
 
-                            }
-                            if(ordered.value==1){
-                                ordered.value = ordered.value-1
-                                cartProduct.ordered = ordered.value
-                                onDeleteClick(cartProduct.cartId)
-                            }**/
                         }) {
                             Icon(
                                 modifier = Modifier.size(20.dp).padding(end=3.dp),
